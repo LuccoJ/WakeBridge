@@ -14,6 +14,11 @@ android {
         versionName = "0.1.0"
     }
 
+    // Only the app's own languages, so library texts match the rest of the app
+    androidResources {
+        localeFilters += listOf("en", "it")
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
