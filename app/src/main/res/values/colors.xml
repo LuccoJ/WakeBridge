@@ -35,4 +35,9 @@
     <color name="chip_neutral_fg">#40484B</color>
 
     <color name="launcher_background">#173A4F</color>
+    <!-- Timeline legend: a raised panel beside the timeline, the pane veiled behind it -->
+    <color name="legend_veil">#CCF8FBFC</color>
+    <color name="legend_panel">#E4EEF1</color>
+    <color name="legend_quiet">#8A9599</color>
+    <color name="legend_on_accent">#FFFFFF</color>
 </resources>

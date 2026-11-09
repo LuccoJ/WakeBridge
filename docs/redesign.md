@@ -199,3 +199,7 @@ fix-third-party-alarms: SET_ALARM prefers unused slots, DISMISS_ALARM marks them
   label shows the live time and the other labels dim. This replaces the drag tooltip.
 - Shift work: no panning and no "now at the top". The axis is noon to noon, or midnight to
   midnight when the night crosses noon (chosen automatically; crossing noon via the time picker).
+- Built in 0.5.0 with the raised-panel backdrop (TimelineLegendPanel): times follow the system
+  12/24-hour setting; the nap goes in the longer part of the day the track shows; the "tap to
+  close" line goes to whichever end of the panel is free. ScreenshotTest renders the panes with
+  `-Pscreenshots=DIR`.

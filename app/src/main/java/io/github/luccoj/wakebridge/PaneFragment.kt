@@ -14,7 +14,8 @@ import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
+import android.view.Gravity
+import android.widget.FrameLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
@@ -83,7 +84,9 @@ class PaneFragment : Fragment() {
             if (night) settings.nightMinutes = value.toInt() else settings.napMinutes = value.toInt()
             // While dragging only the amount and the preview change; the rest on release
             view.findViewById<TextView>(R.id.amount_value).text = Format.minutes(requireContext(), value.toInt())
-            view.findViewById<TimelineView>(R.id.timeline).previewMinutes = value.toInt()
+            view.findViewById<TimelineView>(R.id.timeline).apply {
+                if (night) sleepMinutes = value.toInt() else napMinutes = value.toInt()
+            }
         }
         slider.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
             override fun onStartTrackingTouch(slider: Slider) = Unit
@@ -124,12 +127,35 @@ class PaneFragment : Fragment() {
             override fun onWindowLimit() {
                 Toast.makeText(requireContext(), R.string.toast_shorten_night, Toast.LENGTH_SHORT).show()
             }
+
+            override fun onTouched() = showLegend()
         }
+        val legend = view.findViewById<TimelineLegendView>(R.id.legend)
+        legend.timeline = timeline
+        legend.onDismiss = { hideLegend() }
+        timeline.onChanged = { if (legend.visibility == View.VISIBLE) legend.invalidate() }
+    }
+
+    /** Explains the timeline: on a pane's first visit, and whenever the timeline is touched. */
+    private fun showLegend() {
+        root.findViewById<TimelineLegendView>(R.id.legend).visibility = View.VISIBLE
+        root.findViewById<TimelineView>(R.id.timeline).showBoth = true
+        settings.setLegendSeen(night)
+    }
+
+    private fun hideLegend() {
+        root.findViewById<TimelineLegendView>(R.id.legend).visibility = View.GONE
+        root.findViewById<TimelineView>(R.id.timeline).showBoth = false
+    }
+
+    private fun showLegendOnFirstVisit() {
+        if (!isHidden && !settings.legendSeen(night)) showLegend()
     }
 
     override fun onResume() {
         super.onResume()
         arrangeTimeline()
+        showLegendOnFirstVisit()
         Session.addListener(listener)
         handler.post(ticker)
         ContextCompat.registerReceiver(
@@ -147,6 +173,9 @@ class PaneFragment : Fragment() {
         if (!hidden) {
             arrangeTimeline()
             refresh()
+            showLegendOnFirstVisit()
+        } else {
+            hideLegend()
         }
     }
 
@@ -157,21 +186,26 @@ class PaneFragment : Fragment() {
         super.onPause()
     }
 
-    /** The timeline goes on the side chosen in Settings. */
+    /** The timeline goes on the side chosen in Settings, the content beside it. */
     private fun arrangeTimeline() {
-        val row = root.findViewById<LinearLayout>(R.id.row)
         val timeline = root.findViewById<TimelineView>(R.id.timeline)
+        val content = root.findViewById<View>(R.id.content)
         val left = settings.timelineOnLeft
-        row.removeView(timeline)
-        row.addView(timeline, if (left) 0 else 1)
-        val params = timeline.layoutParams as LinearLayout.LayoutParams
         val gap = resources.getDimensionPixelSize(R.dimen.timeline_gap)
-        params.marginStart = if (left) 0 else gap
-        params.marginEnd = if (left) gap else 0
-        timeline.layoutParams = params
         val side = resources.getDimensionPixelSize(R.dimen.pane_side)
         val edge = resources.getDimensionPixelSize(R.dimen.pane_edge)
-        row.setPaddingRelative(if (left) edge else side, 0, if (left) side else edge, row.paddingBottom)
+        val width = resources.getDimensionPixelSize(R.dimen.timeline_width)
+        (timeline.layoutParams as FrameLayout.LayoutParams).let {
+            it.gravity = if (left) Gravity.START else Gravity.END
+            it.marginStart = if (left) edge else 0
+            it.marginEnd = if (left) 0 else edge
+            timeline.layoutParams = it
+        }
+        (content.layoutParams as FrameLayout.LayoutParams).let {
+            it.marginStart = if (left) edge + width + gap else side
+            it.marginEnd = if (left) side else edge + width + gap
+            content.layoutParams = it
+        }
         timeline.innerOnLeft = !left
     }
 
@@ -188,9 +222,8 @@ class PaneFragment : Fragment() {
             val newStart = if (start) time else settings.nightStart
             val newEnd = if (start) settings.nightEnd else time
             val length = Math.floorMod(newEnd.toSecondOfDay() / 60 - newStart.toSecondOfDay() / 60, 24 * 60)
-            val startAxis = Math.floorMod(newStart.toSecondOfDay() / 60 - 12 * 60, 24 * 60)
-            val endAxis = Math.floorMod(newEnd.toSecondOfDay() / 60 - 12 * 60, 24 * 60).let { if (it == 0) 1440 else it }
-            if (length < 60 || startAxis >= endAxis) {
+            // Across noon is fine (shift work: the timeline turns midnight to midnight), not across both
+            if (!TimelineView.isValidWindow(newStart, newEnd)) {
                 Toast.makeText(requireContext(), R.string.night_window_invalid, Toast.LENGTH_LONG).show()
                 return@TimePickerDialog
             }
@@ -385,7 +418,8 @@ class PaneFragment : Fragment() {
             nightStart = settings.nightStart
             nightEnd = settings.nightEnd
             focusNight = night
-            previewMinutes = minutes
+            napMinutes = settings.napMinutes
+            sleepMinutes = settings.nightMinutes
             minWindowMinutes = settings.nightMinutes
             this.now = now.atZone(Session.clock.zone).toLocalTime()
         }

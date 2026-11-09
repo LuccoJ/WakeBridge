@@ -15,4 +15,8 @@
     <color name="chip_error_fg">#FFDAD6</color>
     <color name="chip_neutral_bg">#2A3336</color>
     <color name="chip_neutral_fg">#BFC8CB</color>
+    <color name="legend_veil">#CC101415</color>
+    <color name="legend_panel">#243034</color>
+    <color name="legend_quiet">#8A9599</color>
+    <color name="legend_on_accent">#00363F</color>
 </resources>

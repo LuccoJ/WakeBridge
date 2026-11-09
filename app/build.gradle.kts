@@ -10,8 +10,8 @@ android {
         applicationId = "io.github.luccoj.wakebridge"
         minSdk = 26
         targetSdk = 35
-        versionCode = 6
-        versionName = "0.4.1"
+        versionCode = 7
+        versionName = "0.5.0"
     }
 
     // Only the app's own languages, so library texts match the rest of the app
@@ -36,6 +36,8 @@ android {
                 providers.gradleProperty("robolectricRepoUrl").orNull?.let {
                     test.systemProperty("robolectric.dependency.repo.url", it)
                 }
+                // -Pscreenshots=DIR renders the panes to PNGs (ScreenshotTest)
+                providers.gradleProperty("screenshots").orNull?.let { test.systemProperty("screenshots", it) }
             }
         }
     }

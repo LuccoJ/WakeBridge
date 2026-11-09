@@ -59,7 +59,7 @@
     <string name="night_every_hint">It arms itself at %s. From then on, you can skip tonight.</string>
     <string name="toast_shorten_night">Decrease the sleep amount to shorten the night</string>
     <string name="toast_widen_night">Widen the night window to sleep longer</string>
-    <string name="night_window_invalid">The night must last at least 1 hour, starting after noon and ending before the next noon.</string>
+    <string name="night_window_invalid">The night must last at least 1 hour, and can\'t include both noon and midnight.</string>
     <string name="timeline_description">Day and night, noon to noon. Night from %1$s to %2$s. Tap a threshold to change it.</string>
 
     <!-- Tile -->
@@ -200,4 +200,11 @@
     <string name="toast_auto_nap">A nap starts by itself when you fall asleep. To start one now, choose Manual.</string>
     <string name="toast_skipped">Skipped tonight: it arms again tomorrow at %s</string>
     <string name="detail_manual_naps">Naps don\'t start by themselves</string>
+    <string name="legend_now">Now</string>
+    <string name="legend_nap">Nap</string>
+    <string name="legend_night_start">Night starts</string>
+    <string name="legend_night_sleep">Night sleep</string>
+    <string name="legend_night_end">Night ends</string>
+    <string name="legend_drag_hint">Drag or tap to change it</string>
+    <string name="legend_close">Tap to close. Tap the timeline to see this again.</string>
 </resources>

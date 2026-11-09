@@ -44,22 +44,20 @@
             android:textAppearance="?attr/textAppearanceLabelLarge" />
     </LinearLayout>
 
-    <LinearLayout
+    <!-- The pane content, then the timeline's legend over it, then the timeline over both;
+         the timeline's side and the content's margins are set in code -->
+    <FrameLayout
         android:id="@+id/row"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        android:paddingStart="20dp"
-        android:paddingEnd="12dp"
-        android:paddingBottom="8dp">
+        android:layout_weight="1">
 
         <LinearLayout
             android:id="@+id/content"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="8dp">
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/status_card"
@@ -242,10 +240,16 @@
             </FrameLayout>
         </LinearLayout>
 
+        <io.github.luccoj.wakebridge.TimelineLegendView
+            android:id="@+id/legend"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
         <io.github.luccoj.wakebridge.TimelineView
             android:id="@+id/timeline"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/timeline_width"
             android:layout_height="match_parent"
-            android:layout_marginStart="8dp" />
-    </LinearLayout>
+            android:layout_marginBottom="8dp" />
+    </FrameLayout>
 </LinearLayout>

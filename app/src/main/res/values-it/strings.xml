@@ -57,7 +57,7 @@
     <string name="night_every_hint">Si attiva da sola alle %s. Da lì puoi saltare la notte.</string>
     <string name="toast_shorten_night">Riduci la quantità di sonno per accorciare la notte</string>
     <string name="toast_widen_night">Allarga la finestra notturna per dormire di più</string>
-    <string name="night_window_invalid">La notte deve durare almeno un\'ora, iniziare dopo mezzogiorno e finire prima del mezzogiorno successivo.</string>
+    <string name="night_window_invalid">La notte deve durare almeno un\'ora, e non può comprendere sia mezzogiorno sia mezzanotte.</string>
     <string name="timeline_description">Giorno e notte, da mezzogiorno a mezzogiorno. Notte dalle %1$s alle %2$s. Tocca un limite per cambiarlo.</string>
 
     <!-- Tile -->
@@ -194,4 +194,11 @@
     <string name="toast_auto_nap">Il pisolino parte da solo quando ti addormenti. Per avviarne uno ora, scegli Manuale.</string>
     <string name="toast_skipped">Saltata stanotte: si riattiva domani alle %s</string>
     <string name="detail_manual_naps">I pisolini non partono da soli</string>
+    <string name="legend_now">Adesso</string>
+    <string name="legend_nap">Pisolino</string>
+    <string name="legend_night_start">Inizio della notte</string>
+    <string name="legend_night_sleep">Sonno notturno</string>
+    <string name="legend_night_end">Fine della notte</string>
+    <string name="legend_drag_hint">Trascina o tocca per cambiarlo</string>
+    <string name="legend_close">Tocca per chiudere. Tocca la linea del tempo per rivederlo.</string>
 </resources>

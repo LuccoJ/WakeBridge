@@ -91,6 +91,11 @@ class Settings(context: Context) {
         set(value) = edit { putBoolean(KEY_NIGHT_INCLUDE_NAPS, value) }
 
     /** Whether [time] falls in the night window. */
+    /** Whether a pane's timeline legend has been shown once, by itself. */
+    fun legendSeen(night: Boolean): Boolean = prefs.getBoolean(if (night) "legend_seen_night" else "legend_seen_day", false)
+
+    fun setLegendSeen(night: Boolean) = edit { putBoolean(if (night) "legend_seen_night" else "legend_seen_day", true) }
+
     fun isNightTime(time: LocalTime): Boolean {
         val start = nightStart
         val end = nightEnd
