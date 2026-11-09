@@ -147,7 +147,8 @@ class TimelineView @JvmOverloads constructor(
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         val pad = dp(6f)
-        track.set(pad, dp(8f), w - pad, h - dp(8f))
+        // The noon suns stick out of the track's ends, the top one level with the status card
+        track.set(pad, dp(5f), w - pad, h - dp(5f))
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -201,15 +202,16 @@ class TimelineView @JvmOverloads constructor(
         // Landmarks behind the numbers: a soft sun behind both noons, a crescent behind midnight
         for (i in listOf(0, 8)) {
             val cy = labelCenter(i)
+            // As CSS's radial-gradient(circle) on the mockup's 30 dp square: sized to its corner
             paint.shader = RadialGradient(
-                track.centerX(), cy, dp(15f),
+                track.centerX(), cy, dp(15f) * 1.414f,
                 intArrayOf(
                     ColorUtils.setAlphaComponent(sunColor, 242), ColorUtils.setAlphaComponent(sunColor, 153),
                     Color.TRANSPARENT
                 ),
                 floatArrayOf(0f, 0.42f, 0.72f), Shader.TileMode.CLAMP
             )
-            canvas.drawCircle(track.centerX(), cy, dp(15f), paint)
+            canvas.drawCircle(track.centerX(), cy, dp(15f) * 1.414f, paint)
             paint.shader = null
         }
         moon.reset()

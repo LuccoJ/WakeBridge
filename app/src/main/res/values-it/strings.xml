@@ -38,28 +38,23 @@
     <string name="mode_from_first_sleep">dal primo addormentamento</string>
     <string name="mode_countdown">conto alla rovescia semplice</string>
     <string name="mode_night_end">alla fine della notte</string>
-    <string name="last_sleep">Ultimo sonno rilevato: %s</string>
     <string name="disconnected_hint">L\'orologio non è connesso: per contare il sonno serve. Riconnettilo in Gadgetbridge, o scegli il conto alla rovescia semplice, che suona sul telefono.</string>
 
     <!-- Panes -->
-    <string name="next_nap">Prossimo pisolino</string>
-    <string name="every_nap">Ogni pisolino</string>
-    <string name="tonight">Stanotte</string>
-    <string name="every_night">Ogni notte</string>
     <string name="sleep_amount">Quantità di sonno</string>
     <string name="wake_me">Svegliami</string>
     <string name="wake_sleep_only">Dopo %s di sonno</string>
     <string name="wake_from_first">%s dopo essermi addormentato/a</string>
     <string name="wake_countdown">%s da adesso</string>
     <string name="wake_night_end">Alla fine della notte, alle %s</string>
-    <string name="include_naps">Conta i pisolini di oggi</string>
+    <string name="include_naps">Includi i pisolini di oggi</string>
     <string name="start_nap">Inizia pisolino</string>
     <string name="stop_nap">Ferma pisolino</string>
     <string name="arm_tonight">Attiva stanotte</string>
     <string name="disarm">Disattiva</string>
     <string name="stop">Ferma</string>
     <string name="snooze">Posticipa di 5 min</string>
-    <string name="night_every_hint">La sveglia notturna si attiva da sola ogni notte all\'inizio della notte. Scegli \"Stanotte\" per attivarla a mano.</string>
+    <string name="night_every_hint">Si attiva da sola alle %s. Da lì puoi saltare la notte.</string>
     <string name="toast_shorten_night">Riduci la quantità di sonno per accorciare la notte</string>
     <string name="toast_widen_night">Allarga la finestra notturna per dormire di più</string>
     <string name="night_window_invalid">La notte deve durare almeno un\'ora, iniziare dopo mezzogiorno e finire prima del mezzogiorno successivo.</string>
@@ -186,10 +181,17 @@
     <string name="detail_naps_after_night">I pisolini riprendono alle %s</string>
     <string name="detail_setup">Vedi Impostazioni, Configurazione e informazioni</string>
     <string name="detail_disconnected">Orologio non connesso: funziona solo il conto alla rovescia</string>
-    <string name="caption_next_nap">Un pisolino: avvialo con il pulsante qui sotto</string>
-    <string name="caption_every_nap">Se ti addormenti di giorno, il pisolino parte da solo</string>
-    <string name="caption_tonight">Solo stanotte: attivala con il pulsante qui sotto</string>
-    <string name="caption_every_night">Si attiva da sola all\'inizio della notte, ogni notte</string>
+    <string name="caption_next_nap">Avvia il pisolino con il pulsante qui sotto</string>
+    <string name="caption_every_nap">Il pisolino parte da solo quando ti addormenti</string>
+    <string name="caption_tonight">Attivala con il pulsante, solo per stanotte</string>
+    <string name="caption_every_night">Si attiva da sola ogni notte alle %s</string>
     <string name="napped_today">Pisolini di oggi</string>
     <string name="toast_night_running">La sveglia notturna è attiva: fermala prima in Sonno notturno</string>
+    <string name="mode_manual">Manuale</string>
+    <string name="mode_auto">Automatico</string>
+    <string name="detecting">In ascolto</string>
+    <string name="skip_tonight">Salta stanotte</string>
+    <string name="toast_auto_nap">Il pisolino parte da solo quando ti addormenti. Per avviarne uno ora, scegli Manuale.</string>
+    <string name="toast_skipped">Saltata stanotte: si riattiva domani alle %s</string>
+    <string name="detail_manual_naps">I pisolini non partono da soli</string>
 </resources>

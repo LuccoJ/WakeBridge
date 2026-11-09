@@ -40,14 +40,9 @@
     <string name="mode_from_first_sleep">from first falling asleep</string>
     <string name="mode_countdown">plain countdown</string>
     <string name="mode_night_end">at the night\'s end</string>
-    <string name="last_sleep">Last sleep detected: %s</string>
     <string name="disconnected_hint">The watch isn\'t connected: counting sleep needs it. Reconnect it in Gadgetbridge, or choose the plain countdown, which rings on the phone.</string>
 
     <!-- Panes -->
-    <string name="next_nap">Next nap</string>
-    <string name="every_nap">Every nap</string>
-    <string name="tonight">Tonight</string>
-    <string name="every_night">Every night</string>
     <string name="sleep_amount">Sleep amount</string>
     <string name="wake_me">Wake me</string>
     <string name="wake_sleep_only">After %s asleep</string>
@@ -61,7 +56,7 @@
     <string name="disarm">Disarm</string>
     <string name="stop">Stop</string>
     <string name="snooze">Snooze 5 min</string>
-    <string name="night_every_hint">The night alarm arms itself every night at the night\'s start. Choose \"Tonight\" to arm it by hand.</string>
+    <string name="night_every_hint">It arms itself at %s. From then on, you can skip tonight.</string>
     <string name="toast_shorten_night">Decrease the sleep amount to shorten the night</string>
     <string name="toast_widen_night">Widen the night window to sleep longer</string>
     <string name="night_window_invalid">The night must last at least 1 hour, starting after noon and ending before the next noon.</string>
@@ -192,10 +187,17 @@
     <string name="detail_naps_after_night">Naps start again at %s</string>
     <string name="detail_setup">See Settings, Setup and info</string>
     <string name="detail_disconnected">Watch not connected: only the countdown works</string>
-    <string name="caption_next_nap">One nap: start it with the button below</string>
-    <string name="caption_every_nap">Falling asleep in the day starts a nap by itself</string>
-    <string name="caption_tonight">Tonight only: arm it with the button below</string>
-    <string name="caption_every_night">Arms itself at the night\'s start, every night</string>
+    <string name="caption_next_nap">Start a nap with the button below</string>
+    <string name="caption_every_nap">A nap starts by itself when you fall asleep</string>
+    <string name="caption_tonight">Arm it with the button, for tonight only</string>
+    <string name="caption_every_night">Arms itself every night at %s</string>
     <string name="napped_today">Napped today</string>
     <string name="toast_night_running">The night alarm is on: stop it in Night sleep first</string>
+    <string name="mode_manual">Manual</string>
+    <string name="mode_auto">Automatic</string>
+    <string name="detecting">Detecting</string>
+    <string name="skip_tonight">Skip tonight</string>
+    <string name="toast_auto_nap">A nap starts by itself when you fall asleep. To start one now, choose Manual.</string>
+    <string name="toast_skipped">Skipped tonight: it arms again tomorrow at %s</string>
+    <string name="detail_manual_naps">Naps don\'t start by themselves</string>
 </resources>

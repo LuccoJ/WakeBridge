@@ -172,3 +172,18 @@ fix-third-party-alarms: SET_ALARM prefers unused slots, DISMISS_ALARM marks them
   titled "WakeBridge", but can't choose the slot. Setup screen: tell users to name their own
   switched-off alarms to protect them (Gadgetbridge's documented convention).
 - Settings: subtle icons beside each entry, like Android's own settings.
+
+## Round 4: feedback on 0.4.0
+- The mode toggle reads "Manual" / "Automatic" ("Manuale" / "Automatico") in both tabs: in both,
+  Automatic means it starts without a tap (Day: on falling asleep; Night: at the night's start),
+  and both count sleep from actually falling asleep. "Prossimo pisolino" didn't fit, "Ogni
+  pisolino" was unclear.
+- Automatic: the round button is greyed ("Detecting" / "In ascolto"; Night: "From 22:45") and a
+  tap explains; it pulses once a nap or the night actually starts. At night it then offers
+  "Skip tonight" ("Salta stanotte"), which re-arms the next night.
+- A switch instead of the toggle is mocked up for comparison (canvas: ModeToggle, ModeSwitch;
+  generator docs/mockups/mode_mockups.py).
+- Manual Day status: "Naps don't start by themselves" instead of an empty second line.
+- Italian: "Includi i pisolini di oggi".
+- Timeline suns: sized as in the mockup (CSS radial-gradient(circle) reaches the square's corner,
+  so the glow is ~30 dp across), sticking out of the track level with the status card.

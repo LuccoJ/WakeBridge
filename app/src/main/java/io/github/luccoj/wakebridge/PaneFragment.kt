@@ -210,8 +210,13 @@ class PaneFragment : Fragment() {
         val state = Session.checkTimers(context)
         if (night) {
             when {
-                state?.kind == Session.Kind.NIGHT -> Session.cancel(context, getString(R.string.log_cancelled))
-                settings.nightEvery -> Toast.makeText(context, R.string.night_every_hint, Toast.LENGTH_LONG).show()
+                state?.kind == Session.Kind.NIGHT -> {
+                    Session.cancel(context, getString(R.string.log_cancelled))
+                    if (settings.nightEvery) {
+                        toast(getString(R.string.toast_skipped, Format.time(context, settings.nightStart)))
+                    }
+                }
+                settings.nightEvery -> toast(getString(R.string.night_every_hint, Format.time(context, settings.nightStart)))
                 settings.nightTonight -> Scheduler.disarmTonight(context)
                 else -> Scheduler.armTonight(context)
             }
@@ -219,7 +224,9 @@ class PaneFragment : Fragment() {
             if (state?.kind == Session.Kind.NAP) {
                 Session.cancel(context, getString(R.string.log_cancelled))
             } else if (state?.kind == Session.Kind.NIGHT) {
-                Toast.makeText(context, R.string.toast_night_running, Toast.LENGTH_LONG).show()
+                toast(getString(R.string.toast_night_running))
+            } else if (settings.dayEvery) {
+                toast(getString(R.string.toast_auto_nap))
             } else {
                 val result = Session.start(
                     context, Session.Kind.NAP, Duration.ofMinutes(settings.napMinutes.toLong()), settings.dayWakeMode
@@ -286,18 +293,16 @@ class PaneFragment : Fragment() {
         root.findViewById<TextView>(R.id.status_details).text = details.ifEmpty { " " }
 
         // Once / every
-        root.findViewById<TextView>(R.id.once).setText(if (night) R.string.tonight else R.string.next_nap)
-        root.findViewById<TextView>(R.id.every).setText(if (night) R.string.every_night else R.string.every_nap)
+        root.findViewById<TextView>(R.id.once).setText(R.string.mode_manual)
+        root.findViewById<TextView>(R.id.every).setText(R.string.mode_auto)
         val every = if (night) settings.nightEvery else settings.dayEvery
         root.findViewById<MaterialButtonToggleGroup>(R.id.every_toggle).check(if (every) R.id.every else R.id.once)
-        root.findViewById<TextView>(R.id.mode_caption).setText(
-            when {
-                night && every -> R.string.caption_every_night
-                night -> R.string.caption_tonight
-                every -> R.string.caption_every_nap
-                else -> R.string.caption_next_nap
-            }
-        )
+        root.findViewById<TextView>(R.id.mode_caption).text = when {
+            night && every -> getString(R.string.caption_every_night, Format.time(context, settings.nightStart))
+            night -> getString(R.string.caption_tonight)
+            every -> getString(R.string.caption_every_nap)
+            else -> getString(R.string.caption_next_nap)
+        }
 
         // Sleep amount
         val minutes = if (night) settings.nightMinutes else settings.napMinutes
@@ -348,9 +353,13 @@ class PaneFragment : Fragment() {
             isClickable = true
             if (night) {
                 when {
-                    mine -> { look = RoundButton.Look.RUNNING; label = getString(R.string.stop) }
+                    mine -> {
+                        look = RoundButton.Look.RUNNING
+                        label = getString(if (settings.nightEvery) R.string.skip_tonight else R.string.stop)
+                    }
+                    // Automatic: greyed until the night starts, then it pulses
                     settings.nightEvery -> {
-                        look = RoundButton.Look.IDLE
+                        look = RoundButton.Look.DISABLED
                         label = getString(R.string.from_time, Format.time(context, settings.nightStart))
                     }
                     settings.nightTonight -> { look = RoundButton.Look.RUNNING; label = getString(R.string.disarm) }
@@ -359,6 +368,10 @@ class PaneFragment : Fragment() {
             } else {
                 when {
                     mine -> { look = RoundButton.Look.RUNNING; label = getString(R.string.stop_nap) }
+                    // Automatic: greyed while waiting for sleep, pulsing once a nap starts by itself
+                    settings.dayEvery && state?.kind != Session.Kind.NIGHT -> {
+                        look = RoundButton.Look.DISABLED; label = getString(R.string.detecting)
+                    }
                     state?.kind == Session.Kind.NIGHT || disconnectedBlocks -> {
                         look = RoundButton.Look.DISABLED; label = getString(R.string.start_nap)
                     }
@@ -378,6 +391,8 @@ class PaneFragment : Fragment() {
         }
         binding = false
     }
+
+    private fun toast(text: String) = Toast.makeText(requireContext(), text, Toast.LENGTH_LONG).show()
 
     private fun TextView.chip(icon: Int, bg: Int, fg: Int) {
         backgroundTintList = ColorStateList.valueOf(context.getColor(bg))
@@ -417,8 +432,7 @@ class PaneFragment : Fragment() {
             settings.dayEvery -> getString(R.string.title_watching_naps) to getString(
                 R.string.detail_nap_hours, Format.time(context, settings.nightEnd), Format.time(context, settings.nightStart)
             )
-            else -> getString(R.string.status_no_nap) to
-                (Session.lastFellAsleep(context)?.let { getString(R.string.last_sleep, Format.dateTime(context, it)) } ?: "")
+            else -> getString(R.string.status_no_nap) to getString(R.string.detail_manual_naps)
         }
     }
 
