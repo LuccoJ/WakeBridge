@@ -113,7 +113,7 @@ a{color:#1F7A91}a:hover{color:#005466}
         <div style="flex: 1; min-height: 8px"></div>
       </main>
     <sc-if value="{{legend}}" hint-placeholder-val="{{ true }}">
-      <div aria-hidden="true" onClick="{{hideLegend}}" style="position: absolute; inset: 0; z-index: 1; background: linear-gradient(to right, #E4EEF1 0px, #E4EEF1 250px, rgba(236, 243, 246, 0.86) 300px, rgba(248, 251, 252, 0.8) 360px, rgba(248, 251, 252, 0.8) 100%%)"></div>
+      <div aria-hidden="true" onClick="{{hideLegend}}" style="position: absolute; inset: 0; z-index: 1; background: linear-gradient(to right, #E4EEF1 0px, #E4EEF1 250px, rgba(236, 243, 246, 0.86) 300px, rgba(248, 251, 252, 0.8) 360px, rgba(248, 251, 252, 0.8) 100%)"></div>
       <div class="lg-layer" onClick="{{hideLegend}}" style="position: absolute; top: 8px; bottom: 12px; left: 46px; right: 16px; cursor: pointer; z-index: 3">
         <sc-for list="{{spans}}" as="sp" hint-placeholder-count="2">
           <div style="position: absolute; left: 2px; width: 7px; top: {{sp.top}}; height: {{sp.height}}; min-height: 4px; box-sizing: border-box; border: 2px solid {{sp.color}}; border-left: 0; border-radius: 0 4px 4px 0"></div>

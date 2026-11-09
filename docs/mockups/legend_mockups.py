@@ -285,7 +285,7 @@ class Component extends DCLogic {
 
 BACKDROPS = {
     # A tint that starts behind the timeline and blends into a light veil over the rest of the pane
-    'gradient': '<div aria-hidden="true" onClick="{{hideLegend}}" style="position: absolute; inset: 0; z-index: 1; background: linear-gradient(to right, #E4EEF1 0px, #E4EEF1 250px, rgba(236, 243, 246, 0.86) 300px, rgba(248, 251, 252, 0.8) 360px, rgba(248, 251, 252, 0.8) 100%%)"></div>',
+    'gradient': '<div aria-hidden="true" onClick="{{hideLegend}}" style="position: absolute; inset: 0; z-index: 1; background: linear-gradient(to right, #E4EEF1 0px, #E4EEF1 250px, rgba(236, 243, 246, 0.86) 300px, rgba(248, 251, 252, 0.8) 360px, rgba(248, 251, 252, 0.8) 100%)"></div>',
     # A raised sheet holding the timeline and the legend, the pane veiled behind it
     'panel': '<div aria-hidden="true" onClick="{{hideLegend}}" style="position: absolute; inset: 0; z-index: 1; background: rgba(248, 251, 252, 0.8)"></div>'
              '<div aria-hidden="true" style="position: absolute; top: 0; bottom: 4px; left: 0; width: 286px; z-index: 1; border-radius: 0 24px 24px 0; background: #E4EEF1; box-shadow: 2px 0 18px rgba(23, 58, 79, 0.16)"></div>',
