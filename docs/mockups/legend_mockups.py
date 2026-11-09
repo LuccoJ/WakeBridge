@@ -12,7 +12,7 @@ sys.argv = argv
 HEAD, STATUS, NAV, TOGGLE, REST, BUTTON, HEADER, SPACER = (
     ns[k] for k in ['HEAD', 'STATUS', 'NAV', 'TOGGLE', 'REST', 'BUTTON', 'HEADER', 'SPACER'])
 
-TIMELINE = '''      <aside onClick="{{showLegend}}" aria-label="{{tlLabel}}" style="flex: none; width: 34px; position: relative; cursor: pointer">
+TIMELINE = '''      <aside onClick="{{showLegend}}" aria-label="{{tlLabel}}" style="flex: none; width: 34px; position: relative; cursor: pointer; z-index: 2">
         <div data-track="1" style="position: absolute; top: 4px; bottom: 4px; left: 3px; width: 28px">
           <div style="position: absolute; inset: 0; border-radius: 14px; background: {{tlGradient}}"></div>
           <sc-if value="{{showNap}}" hint-placeholder-val="{{ true }}">
@@ -43,8 +43,8 @@ TIMELINE = '''      <aside onClick="{{showLegend}}" aria-label="{{tlLabel}}" sty
 # The legend sits over the pane content, in the timeline's coordinates (track: 8px from the
 # row's top, 12px from its bottom), arrows pointing back at the track
 LEGEND = '''    <sc-if value="{{legend}}" hint-placeholder-val="{{ true }}">
-      <div aria-hidden="true" style="position: absolute; top: 0; bottom: 0; left: 46px; right: 0; pointer-events: none; background: linear-gradient(to right, rgba(248, 251, 252, 0.97) 0%, rgba(248, 251, 252, 0.95) 50%, rgba(248, 251, 252, 0.6) 72%, rgba(248, 251, 252, 0) 92%)"></div>
-      <div class="lg-layer" onClick="{{hideLegend}}" style="position: absolute; top: 8px; bottom: 12px; left: 46px; right: 16px; cursor: pointer">
+      %(backdrop)s
+      <div class="lg-layer" onClick="{{hideLegend}}" style="position: absolute; top: 8px; bottom: 12px; left: 46px; right: 16px; cursor: pointer; z-index: 3">
         <sc-for list="{{spans}}" as="sp" hint-placeholder-count="2">
           <div style="position: absolute; left: 2px; width: 7px; top: {{sp.top}}; height: {{sp.height}}; min-height: 4px; box-sizing: border-box; border: 2px solid {{sp.color}}; border-left: 0; border-radius: 0 4px 4px 0"></div>
         </sc-for>
@@ -54,25 +54,21 @@ LEGEND = '''    <sc-if value="{{legend}}" hint-placeholder-val="{{ true }}">
             <sc-if value="{{it.arrow}}" hint-placeholder-val="{{ true }}">
               <div style="position: absolute; left: 0; top: -5px; width: 0; height: 0; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-right: 7px solid {{it.color}}"></div>
             </sc-if>
-            <div style="position: absolute; left: 30px; top: 0; transform: translateY(-50%); display: flex; align-items: baseline; gap: 8px; padding: {{it.pad}}; border-radius: 12px; background: {{it.bg}}; color: {{it.fg}}; white-space: nowrap">
-              <span style="font-size: 15px; font-weight: 500">{{it.label}}</span>
+            <div style="position: absolute; left: 26px; top: 0; transform: translateY(-50%); display: flex; align-items: baseline; gap: 8px; padding: {{it.pad}}; border-radius: 12px; background: {{it.bg}}; color: {{it.fg}}; white-space: nowrap">
+              <span style="font-size: {{it.labelSize}}; font-weight: {{it.weight}}">{{it.label}}</span>
               <span style="font-size: {{it.valueSize}}; font-weight: 500; color: {{it.valueColor}}">{{it.value}}</span>
             </div>
             <sc-if value="{{it.hasHint}}" hint-placeholder-val="{{ false }}">
-              <div style="position: absolute; left: 31px; top: 13px; font-size: 12px; color: #40484B; white-space: nowrap">{{it.hint}}</div>
+              <div style="position: absolute; left: 32px; top: 13px; font-size: 12px; color: #40484B; white-space: nowrap">{{it.hint}}</div>
             </sc-if>
             <sc-if value="{{it.handle}}" hint-placeholder-val="{{ false }}">
-              <div onPointerDown="{{it.dragStart}}" onClick="{{stop}}" title="{{it.hint}}" style="position: absolute; left: 0; top: -18px; width: 210px; height: 50px; cursor: ns-resize; touch-action: none"></div>
-              <div style="position: absolute; left: 216px; top: -12px; display: flex; gap: 4px" onClick="{{stop}}">
-                <button onClick="{{it.up}}" aria-label="{{simUp}}" style="width: 28px; height: 24px; border: 1px dashed #B9C2C5; border-radius: 8px; background: #FFFFFF; color: #70787B; font: 12px Roboto, sans-serif; cursor: pointer">&#9650;</button>
-                <button onClick="{{it.down}}" aria-label="{{simDown}}" style="width: 28px; height: 24px; border: 1px dashed #B9C2C5; border-radius: 8px; background: #FFFFFF; color: #70787B; font: 12px Roboto, sans-serif; cursor: pointer">&#9660;</button>
-              </div>
+              <div onPointerDown="{{it.dragStart}}" onClick="{{stop}}" title="{{it.hint}}" style="position: absolute; left: 0; top: -18px; width: 220px; height: 50px; cursor: ns-resize; touch-action: none"></div>
             </sc-if>
           </div>
         </sc-for>
-        <p style="position: absolute; left: 30px; width: 200px; bottom: 26px; margin: 0; font-size: 12px; color: #70787B">{{closeHint}}</p>
+        <p style="position: absolute; left: 32px; width: 190px; bottom: 26px; margin: 0; font-size: 12px; color: #70787B">{{closeHint}}</p>
         <sc-if value="{{nowTop3}}" hint-placeholder-val="{{ false }}">
-          <button onClick="{{advance}}" style="position: absolute; left: 30px; bottom: 0; border: 1px dashed #B9C2C5; border-radius: 8px; background: #FFFFFF; padding: 2px 8px; color: #70787B; font: italic 11px Roboto, sans-serif; cursor: pointer">{{advanceLabel}}</button>
+          <button onClick="{{advance}}" style="position: absolute; left: 32px; bottom: 0; border: 1px dashed #B9C2C5; border-radius: 8px; background: #FFFFFF; padding: 2px 8px; color: #70787B; font: italic 11px Roboto, sans-serif; cursor: pointer">{{advanceLabel}}</button>
         </sc-if>
         <button onClick="{{toggleLang}}" style="position: absolute; left: 150px; bottom: 0; border: 1px dashed #B9C2C5; border-radius: 8px; background: #FFFFFF; padding: 2px 8px; color: #70787B; font: italic 11px Roboto, sans-serif; cursor: pointer">{{langLabel}}</button>
       </div>
@@ -218,9 +214,10 @@ class Component extends DCLogic {
       const dim = s.drag && !dragging;
       return Object.assign({
         top: pct(f), label, value, arrow: true, lineLeft: '6px', lineWidth: '22px', handle: false,
-        color: dim ? '#B9C2C5' : deep, bg: dragging ? deep : 'transparent', fg: dragging ? '#FFFFFF' : (dim ? '#8A9599' : '#191C1D'),
+        color: dim ? '#B9C2C5' : deep, bg: dragging ? deep : '#E4EEF1', fg: dragging ? '#FFFFFF' : (dim ? '#8A9599' : '#191C1D'),
         valueColor: dragging ? '#FFFFFF' : (dim ? '#8A9599' : deep), valueSize: dragging ? '20px' : '15px',
-        pad: dragging ? '4px 10px' : '0', hasHint: false, hint: '',
+        labelSize: '15px', weight: '500',
+        pad: dragging ? '4px 10px' : '1px 6px', hasHint: false, hint: '',
       }, extra || {});
     };
     const spanItem = (top, h, label, value) => item('span', top + h / 2, label, value, { arrow: false, lineLeft: '9px', lineWidth: '19px' });
@@ -229,7 +226,10 @@ class Component extends DCLogic {
       up: this.step(kind, -15), down: this.step(kind, 15),
     });
     const items = [
-      item('now', pos(s.now), t.now, hhmm(s.now)),
+      // "Now" is quiet and drawn first, so the other marks stay readable on top of it
+      item('now', pos(s.now), t.now, hhmm(s.now), {
+        color: '#B4BEC2', fg: '#7D898E', valueColor: '#7D898E', labelSize: '13px', valueSize: '13px', weight: '400', bg: 'transparent',
+      }),
       spanItem(napTop, napH, t.nap, dur(napLen)),
       handle('start', sF, t.start, hhmm(s.start)),
       spanItem(sleepTop, sleepH, t.sleep, dur(sleepLen)),
@@ -283,7 +283,16 @@ class Component extends DCLogic {
 '''
 
 
-def page(title, shift, nowtop=False):
+BACKDROPS = {
+    # A tint that starts behind the timeline and blends into a light veil over the rest of the pane
+    'gradient': '<div aria-hidden="true" onClick="{{hideLegend}}" style="position: absolute; inset: 0; z-index: 1; background: linear-gradient(to right, #E4EEF1 0px, #E4EEF1 250px, rgba(236, 243, 246, 0.86) 300px, rgba(248, 251, 252, 0.8) 360px, rgba(248, 251, 252, 0.8) 100%%)"></div>',
+    # A raised sheet holding the timeline and the legend, the pane veiled behind it
+    'panel': '<div aria-hidden="true" onClick="{{hideLegend}}" style="position: absolute; inset: 0; z-index: 1; background: rgba(248, 251, 252, 0.8)"></div>'
+             '<div aria-hidden="true" style="position: absolute; top: 0; bottom: 4px; left: 0; width: 286px; z-index: 1; border-radius: 0 24px 24px 0; background: #E4EEF1; box-shadow: 2px 0 18px rgba(23, 58, 79, 0.16)"></div>',
+}
+
+
+def page(title, shift, nowtop=False, backdrop='gradient'):
     content = STATUS + TOGGLE + REST + SPACER + BUTTON + SPACER
     return (HEAD.format(title=title) +
             '<div style="width: 390px; height: 844px; box-sizing: border-box; background: #F8FBFC; display: flex; flex-direction: column; position: relative">\n' +
@@ -292,11 +301,12 @@ def page(title, shift, nowtop=False):
             TIMELINE +
             '      <main style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 12px">\n' +
             content +
-            '      </main>\n' + LEGEND + '  </div>\n' + NAV + '</div>\n</x-dc>\n' +
+            '      </main>\n' + LEGEND.replace('%(backdrop)s', BACKDROPS[backdrop]) + '  </div>\n' + NAV + '</div>\n</x-dc>\n' +
             SCRIPT % {'shift': 'true' if shift else 'false', 'nowtop': 'true' if nowtop else 'false'})
 
 
 open(out_dir + '/TimelineLegend.dc.html', 'w').write(page('WakeBridge, legenda della linea del tempo', False))
 open(out_dir + '/TimelineShift.dc.html', 'w').write(page('WakeBridge, turno di notte', True))
+open(out_dir + '/TimelineLegendPanel.dc.html', 'w').write(page('WakeBridge, legenda su un pannello', False, False, 'panel'))
 open(out_dir + '/TimelineNowTop.dc.html', 'w').write(page('WakeBridge, adesso in cima', False, True))
 print('ok')
