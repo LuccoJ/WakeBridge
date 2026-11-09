@@ -74,12 +74,12 @@ class TimelineView @JvmOverloads constructor(
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val text = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         textAlign = Paint.Align.CENTER
-        textSize = sp(10f)
-        isFakeBoldText = true
+        textSize = sp(12f)
     }
     private val small = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         textAlign = Paint.Align.CENTER
-        textSize = sp(7f)
+        textSize = sp(9f)
+        typeface = android.graphics.Typeface.create("sans-serif-light", android.graphics.Typeface.NORMAL)
     }
     private val touchSlop = ViewConfiguration.get(context).scaledTouchSlop
 
