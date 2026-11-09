@@ -158,3 +158,15 @@ as a Settings choice, mindful of option creep):
 - Timeline landmarks (agreed): a soft warm sun glow (~30 dp, little blur) behind both 12s and a
   pale blue crescent (~28 dp, 80% opacity) behind 00; numbers stay on top. The top sun also
   softens the timeline's top edge against the status card.
+
+## Round 3: feedback on 0.3.1 (layout A chosen for the app)
+- Build layout A (status card two fixed lines, mode caption, same rows in both tabs, round
+  button centred in the space left, no scrolling); chip = Bluetooth icon + name.
+- Per-app language: switchable in Android's "App languages" (Android 13+).
+- Tapping the greyed round button explains why (toast: watch not connected, or a night running).
+- Connection chip updates live (Bluetooth connect/disconnect broadcasts), not only on pane switch.
+- Gadgetbridge's SET_ALARM treats any alarm that is off and has no name as free, so it can
+  overwrite the user's own switched-off, untitled alarms. WakeBridge only ever dismisses alarms
+  titled "WakeBridge", but can't choose the slot. Setup screen: tell users to name their own
+  switched-off alarms to protect them (Gadgetbridge's documented convention).
+- Settings: subtle icons beside each entry, like Android's own settings.
