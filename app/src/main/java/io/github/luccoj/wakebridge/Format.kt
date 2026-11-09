@@ -40,12 +40,15 @@ object Format {
     fun status(context: Context, state: Session.State?, now: Instant = Session.now()): String {
         if (state == null) return context.getString(R.string.status_idle)
         val slept = state.sleptAt(now).toMinutes().toInt()
+        val alarm = state.wakeAt?.let { time(context, it) }
         return when {
-            state.wakeAt != null && state.sleepOnly ->
-                context.getString(R.string.status_asleep, time(context, state.wakeAt))
-            state.wakeAt != null ->
-                context.getString(R.string.status_alarm_at, time(context, state.wakeAt))
+            !state.sleepOnly -> context.getString(R.string.status_alarm_at, alarm)
+            state.asleepSince != null -> context.getString(R.string.status_asleep, alarm)
+            slept == 0 && alarm != null -> context.getString(R.string.status_waiting_alarm, alarm)
             slept == 0 -> context.getString(R.string.status_waiting)
+            alarm != null -> context.getString(
+                R.string.status_waiting_slept_alarm, minutes(context, slept), duration(context, state.target), alarm
+            )
             else -> context.getString(
                 R.string.status_waiting_slept, minutes(context, slept), duration(context, state.target)
             )

@@ -8,7 +8,20 @@
             app:title="@string/settings_watch_title" />
     </PreferenceCategory>
 
+    <PreferenceCategory app:title="@string/settings_tile_category">
+        <SwitchPreferenceCompat
+            app:key="tile_one_tap"
+            app:title="@string/settings_tile_one_tap_title"
+            app:summary="@string/settings_tile_one_tap_summary"
+            app:defaultValue="false" />
+    </PreferenceCategory>
+
     <PreferenceCategory app:title="@string/settings_alarms_category">
+        <SwitchPreferenceCompat
+            app:key="early_alarm"
+            app:title="@string/settings_early_title"
+            app:summary="@string/settings_early_summary"
+            app:defaultValue="true" />
         <SeekBarPreference
             app:key="expiry_hours"
             app:title="@string/settings_expiry_title"

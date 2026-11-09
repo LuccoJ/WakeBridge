@@ -14,7 +14,11 @@ The app is in English and Italian.
 
 - **Naps**: pick a length (5 min to 3 h) and start; counting begins when you fall asleep.
   Turn off "Count only time asleep" for a plain countdown that starts right away.
-- **Quick Settings tile**: tap to start a nap with the last settings, or to cancel;
+- **Alarm right away** (on by default): when counting only sleep, the watch always holds an
+  alarm for the earliest time the sleep could be complete, moved later as sleep is detected.
+  A missed event or a disconnection can only wake you early, never not at all.
+- **Quick Settings tile**: tap for a dialog over the panel to start a nap (or, with "One tap
+  starts the nap", start right away); tap during a session to confirm cancelling it;
   long-press to open the app.
 - **Automatic naps**: falling asleep outside night-time starts a nap of a preset length.
 - **Nightly alarm**: every night at a set time, arm an alarm for a full night's sleep
@@ -37,6 +41,7 @@ The app is in English and Italian.
   "WakeBridge". WakeBridge only ever dismisses alarms with that title.
 - Watch alarms have minute resolution, so wake-up times are rounded up to the next minute.
 - A finished alarm is removed from the watch 10 minutes after its time, so snoozing still works.
+- Gadgetbridge has no command to move an alarm, so a move is a dismissal followed by a new alarm.
 - WakeBridge can't tell whether a watch supports sleep events: the setup screen shows the last
   ones received.
 

@@ -27,6 +27,14 @@ class Settings(context: Context) {
         get() = prefs.getBoolean(KEY_NAP_SLEEP_ONLY, true)
         set(value) = prefs.edit().putBoolean(KEY_NAP_SLEEP_ONLY, value).apply()
 
+    /** Whether tapping the tile starts a nap right away, instead of showing a dialog. */
+    val tileOneTap: Boolean
+        get() = prefs.getBoolean(KEY_TILE_ONE_TAP, false)
+
+    /** Whether a session counting only sleep sets an alarm for the earliest possible time right away. */
+    val earlyAlarm: Boolean
+        get() = prefs.getBoolean(KEY_EARLY_ALARM, true)
+
     /** Hours after which an alarm that never went off is cancelled; 0 never cancels. */
     val expiryHours: Int
         get() = prefs.getInt(KEY_EXPIRY_HOURS, 12)
@@ -71,6 +79,8 @@ class Settings(context: Context) {
         const val KEY_WATCH_NAME = "watch_name"
         const val KEY_NAP_MINUTES = "nap_minutes"
         const val KEY_NAP_SLEEP_ONLY = "nap_sleep_only"
+        const val KEY_TILE_ONE_TAP = "tile_one_tap"
+        const val KEY_EARLY_ALARM = "early_alarm"
         const val KEY_EXPIRY_HOURS = "expiry_hours"
         const val KEY_NIGHT_ENABLED = "night_enabled"
         const val KEY_NIGHT_ARM_TIME = "night_arm_time"

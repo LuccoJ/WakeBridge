@@ -11,6 +11,8 @@
     <string name="status_idle">No alarm set</string>
     <string name="status_waiting">Waiting for sleep</string>
     <string name="status_waiting_slept">Awake, slept %1$s of %2$s</string>
+    <string name="status_waiting_alarm">Waiting for sleep, alarm at %s at the earliest</string>
+    <string name="status_waiting_slept_alarm">Awake, slept %1$s of %2$s, alarm at %3$s at the earliest</string>
     <string name="status_asleep">Asleep, alarm at %s</string>
     <string name="status_alarm_at">Alarm at %s</string>
     <string name="kind_nap">Nap</string>
@@ -27,7 +29,7 @@
     <string name="nap_length_description">Nap length in minutes</string>
     <string name="sleep_only_title">Count only time asleep</string>
     <string name="sleep_only_summary">Starts when your watch detects sleep, and pauses while you\'re awake</string>
-    <string name="tile_hint">Tip: add the WakeBridge tile to Quick Settings. Tap it to start a nap with these settings, or to cancel; long-press it to come here.</string>
+    <string name="tile_hint">Tip: add the WakeBridge tile to Quick Settings. Tap it to start a nap, or to cancel one; long-press it to come here.</string>
     <string name="details_slept">Slept so far: %1$s of %2$s</string>
     <string name="details_latest">No later than %s</string>
     <string name="details_deadline">Cancelled if not over by %s</string>
@@ -40,12 +42,16 @@
     <string name="tile_setup_needed">Tap to set up</string>
     <string name="tile_idle_sleep_only">%s of sleep</string>
     <string name="tile_idle_countdown">%s</string>
+    <string name="tile_cancel_question">Cancel this alarm? (%s)</string>
+    <string name="keep">Keep</string>
+    <string name="open_app">Open app</string>
 
     <!-- Event log -->
     <string name="log_started">Started: %s</string>
     <string name="log_fell_asleep">Gadgetbridge: fell asleep</string>
     <string name="log_woke_up">Gadgetbridge: woke up</string>
     <string name="log_paused">Awake: alarm withdrawn, slept %1$d of %2$d min</string>
+    <string name="log_paused_early">Awake: slept %1$d of %2$d min, alarm at %3$s at the earliest</string>
     <string name="log_finished">Alarm time reached</string>
     <string name="log_cancelled">Cancelled</string>
     <string name="log_expired">Cancelled: no alarm within %d h</string>
@@ -64,7 +70,12 @@
     <string name="settings_watch_manual">Enter address manually</string>
     <string name="settings_watch_manual_message">The watch\'s Bluetooth address, as shown in Gadgetbridge\'s device info.</string>
     <string name="settings_watch_invalid">That isn\'t a Bluetooth address (AA:BB:CC:DD:EE:FF)</string>
+    <string name="settings_tile_category">Quick Settings tile</string>
+    <string name="settings_tile_one_tap_title">One tap starts the nap</string>
+    <string name="settings_tile_one_tap_summary">Tapping the tile starts a nap right away with the nap settings on the main screen, instead of showing them first</string>
     <string name="settings_alarms_category">Alarms</string>
+    <string name="settings_early_title">Alarm right away</string>
+    <string name="settings_early_summary">When counting only time asleep, always keep an alarm for the earliest time the sleep could be complete, moving it later as sleep is detected. If the watch disconnects or misses an event, you wake up early rather than not at all. If you never fall asleep, the alarm still goes off.</string>
     <string name="settings_expiry_title">Cancel after (hours)</string>
     <string name="settings_expiry_summary">Cancel an alarm that hasn\'t gone off this many hours after starting. 0 never cancels.</string>
     <string name="settings_auto_nap_category">Automatic naps</string>

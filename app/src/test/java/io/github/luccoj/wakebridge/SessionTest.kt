@@ -31,6 +31,8 @@ class SessionTest {
             .putString(Settings.KEY_WATCH_ADDRESS, watch)
             .putString(Settings.KEY_NIGHT_ARM_TIME, "21:00")
             .putString(Settings.KEY_NIGHT_LATEST_TIME, "08:00")
+            // Most tests cover the classic mode; the early alarm has its own tests below
+            .putBoolean(Settings.KEY_EARLY_ALARM, false)
             .commit()
         at("2026-11-09T14:00:00")
     }
@@ -290,5 +292,104 @@ class SessionTest {
         at("2026-11-09T22:00:00")
         assertEquals(Instant.parse("2026-11-10T08:00:00Z"), Scheduler.nextOccurrence(java.time.LocalTime.of(8, 0)))
         assertEquals(Instant.parse("2026-11-09T23:00:00Z"), Scheduler.nextOccurrence(java.time.LocalTime.of(23, 0)))
+    }
+
+    // Early alarm ("Alarm right away"): the watch always holds the earliest possible alarm
+
+    private fun early() = setting(Settings.KEY_EARLY_ALARM, true)
+
+    @Test
+    fun earlyAlarmMovesLaterWithSleepAndStaysWhileAwake() {
+        early()
+        nap(20)
+        assertEquals(listOf("SET 14:20"), commands())
+
+        at("2026-11-09T14:05:00")
+        Session.onFellAsleep(app)
+        assertEquals(listOf("DISMISS WakeBridge", "SET 14:25"), commands())
+
+        at("2026-11-09T14:10:00") // 5 slept, 15 left: earliest is 14:25 again
+        Session.onWokeUp(app)
+        assertEquals("unchanged time, nothing sent", emptyList<String>(), commands())
+        assertEquals(Instant.parse("2026-11-09T14:25:00Z"), Session.current(app)!!.wakeAt)
+
+        at("2026-11-09T14:12:00") // still 15 left: 14:27
+        Session.onFellAsleep(app)
+        assertEquals(listOf("DISMISS WakeBridge", "SET 14:27"), commands())
+
+        at("2026-11-09T14:20:00") // a second awakening: 8 + 5 = 13 slept, 7 left
+        Session.onWokeUp(app)
+        assertEquals("waking up never moves the alarm earlier or withdraws it", emptyList<String>(), commands())
+        assertEquals(Instant.parse("2026-11-09T14:27:00Z"), Session.current(app)!!.wakeAt)
+    }
+
+    @Test
+    fun earlyAlarmRingsEvenWithoutSleep() {
+        early()
+        nap(20)
+        commands()
+        at("2026-11-09T14:20:00")
+        assertNull(Session.checkTimers(app))
+        at("2026-11-09T14:30:00")
+        Session.checkTimers(app)
+        assertEquals(listOf("DISMISS WakeBridge"), commands())
+    }
+
+    @Test
+    fun earlyAlarmOnlyWhenCountingSleep() {
+        early()
+        nap(20, sleepOnly = false)
+        assertEquals(listOf("SET 14:20"), commands())
+        Session.onFellAsleep(app)
+        assertEquals(emptyList<String>(), commands())
+    }
+
+    @Test
+    fun earlyAutomaticNapStartsAsleep() {
+        early()
+        setting(Settings.KEY_AUTO_NAP_ENABLED, true)
+        at("2026-11-09T15:00:00")
+        Session.onFellAsleep(app)
+        assertEquals("set at the start, already the right time once asleep", listOf("SET 15:20"), commands())
+    }
+
+    @Test
+    fun earlyNightRespectsNightsEnd() {
+        early()
+        setting(Settings.KEY_NIGHT_ENABLED, true)
+        setting(Settings.KEY_NIGHT_MINUTES, "450")
+        at("2026-11-09T21:00:00")
+        Scheduler.armNight(app)
+        assertEquals(listOf("SET 04:30"), commands())
+        at("2026-11-10T01:00:00")
+        Session.onFellAsleep(app)
+        assertEquals(listOf("DISMISS WakeBridge", "SET 08:00"), commands())
+    }
+
+    @Test
+    fun earlyNightTakesOverASleepingNap() {
+        early()
+        setting(Settings.KEY_NIGHT_ENABLED, true)
+        setting(Settings.KEY_NIGHT_MINUTES, "450")
+        at("2026-11-09T20:40:00")
+        nap(30)
+        at("2026-11-09T20:50:00")
+        Session.onFellAsleep(app)
+        assertEquals(listOf("SET 21:10", "DISMISS WakeBridge", "SET 21:20"), commands())
+        at("2026-11-09T21:00:00")
+        Scheduler.armNight(app)
+        assertEquals(listOf("DISMISS WakeBridge", "SET 04:30"), commands())
+    }
+
+    @Test
+    fun aChangedSettingDoesNotAffectARunningSession() {
+        early()
+        nap(20)
+        setting(Settings.KEY_EARLY_ALARM, false)
+        at("2026-11-09T14:05:00")
+        Session.onFellAsleep(app)
+        at("2026-11-09T14:10:00")
+        Session.onWokeUp(app)
+        assertNotNull(Session.current(app)!!.wakeAt)
     }
 }

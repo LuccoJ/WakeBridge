@@ -9,6 +9,8 @@
     <string name="status_idle">Nessuna sveglia impostata</string>
     <string name="status_waiting">In attesa del sonno</string>
     <string name="status_waiting_slept">In pausa, dormito %1$s su %2$s</string>
+    <string name="status_waiting_alarm">In attesa del sonno, sveglia non prima delle %s</string>
+    <string name="status_waiting_slept_alarm">In pausa, dormito %1$s su %2$s, sveglia non prima delle %3$s</string>
     <string name="status_asleep">Sonno in corso, sveglia alle %s</string>
     <string name="status_alarm_at">Sveglia alle %s</string>
     <string name="kind_nap">Pisolino</string>
@@ -25,7 +27,7 @@
     <string name="nap_length_description">Durata del pisolino in minuti</string>
     <string name="sleep_only_title">Conta solo il tempo addormentato</string>
     <string name="sleep_only_summary">Parte quando l\'orologio rileva il sonno, e si ferma durante i risvegli</string>
-    <string name="tile_hint">Suggerimento: aggiungi il riquadro di WakeBridge alle Impostazioni rapide. Toccalo per iniziare un pisolino con queste impostazioni, o per annullarlo; tienilo premuto per tornare qui.</string>
+    <string name="tile_hint">Suggerimento: aggiungi il riquadro di WakeBridge alle Impostazioni rapide. Toccalo per iniziare un pisolino o annullarlo; tienilo premuto per tornare qui.</string>
     <string name="details_slept">Dormito finora: %1$s su %2$s</string>
     <string name="details_latest">Non oltre le %s</string>
     <string name="details_deadline">Annullata se non suona entro le %s</string>
@@ -38,12 +40,16 @@
     <string name="tile_setup_needed">Tocca per configurare</string>
     <string name="tile_idle_sleep_only">%s di sonno</string>
     <string name="tile_idle_countdown">%s</string>
+    <string name="tile_cancel_question">Annullare questa sveglia? (%s)</string>
+    <string name="keep">Mantieni</string>
+    <string name="open_app">Apri l\'app</string>
 
     <!-- Event log -->
     <string name="log_started">Avviata: %s</string>
     <string name="log_fell_asleep">Gadgetbridge: inizio del sonno</string>
     <string name="log_woke_up">Gadgetbridge: risveglio</string>
     <string name="log_paused">Risveglio: sveglia ritirata, dormito %1$d su %2$d min</string>
+    <string name="log_paused_early">Risveglio: dormito %1$d su %2$d min, sveglia non prima delle %3$s</string>
     <string name="log_finished">Ora della sveglia raggiunta</string>
     <string name="log_cancelled">Annullata</string>
     <string name="log_expired">Annullata: nessuna sveglia entro %d h</string>
@@ -62,7 +68,12 @@
     <string name="settings_watch_manual">Inserisci l\'indirizzo a mano</string>
     <string name="settings_watch_manual_message">L\'indirizzo Bluetooth dell\'orologio, come appare nelle informazioni sul dispositivo in Gadgetbridge.</string>
     <string name="settings_watch_invalid">Non è un indirizzo Bluetooth (AA:BB:CC:DD:EE:FF)</string>
+    <string name="settings_tile_category">Riquadro delle Impostazioni rapide</string>
+    <string name="settings_tile_one_tap_title">Un tocco avvia il pisolino</string>
+    <string name="settings_tile_one_tap_summary">Toccare il riquadro avvia subito un pisolino con le impostazioni della schermata principale, invece di mostrarle prima</string>
     <string name="settings_alarms_category">Sveglie</string>
+    <string name="settings_early_title">Sveglia subito</string>
+    <string name="settings_early_summary">Quando si conta solo il tempo addormentato, tieni sempre una sveglia per il primo momento in cui il sonno potrebbe essere completo, spostandola più avanti quando viene rilevato il sonno. Se l\'orologio si disconnette o perde un evento, la sveglia arriva prima, mai dopo. Se non ti addormenti affatto, la sveglia suona comunque.</string>
     <string name="settings_expiry_title">Annulla dopo (ore)</string>
     <string name="settings_expiry_summary">Annulla una sveglia che non ha suonato dopo questo numero di ore dall\'avvio. 0 non annulla mai.</string>
     <string name="settings_auto_nap_category">Pisolini automatici</string>

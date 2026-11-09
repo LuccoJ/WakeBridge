@@ -14,10 +14,13 @@ import java.time.temporal.ChronoUnit
  * The one sleep session that can be active at a time: a nap started by the user, or the night's
  * sleep armed by the nightly schedule.
  *
- * With "count only time asleep", nothing happens until the watch reports falling asleep. Then a
- * watch alarm is set for when the remaining sleep time runs out. If the watch reports waking up
- * before that, the time slept is added up and the alarm is withdrawn until the next fell-asleep
- * event. Without it, the alarm is set right away for the whole duration.
+ * With "count only time asleep", the watch alarm is set for when the remaining sleep time runs out
+ * after the watch reports falling asleep. If the watch reports waking up before that, the time
+ * slept is added up and counting pauses until the next fell-asleep event. With "alarm right away"
+ * (early), the watch always holds an alarm for the earliest time the sleep could be complete: set at
+ * the start, then moved later on each event, so a missed event or a disconnection can only wake the
+ * user early. Without it, there is no alarm while the user is awake. Without "count only time
+ * asleep", the alarm is set right away for the whole duration.
  *
  * Watch alarms have minute resolution, so wake-up times are rounded up to the next full minute.
  */
@@ -47,6 +50,8 @@ object Session {
         val kind: Kind,
         val target: Duration,
         val sleepOnly: Boolean,
+        /** Keeps an alarm set for the earliest possible time, also while awake. */
+        val early: Boolean,
         val startedAt: Instant,
         val slept: Duration,
         /** When the current stretch of sleep began, if the user is asleep. */
@@ -77,6 +82,7 @@ object Session {
             kind = Kind.valueOf(p.getString("kind", Kind.NAP.name)!!),
             target = Duration.ofMillis(p.getLong("target", 0)),
             sleepOnly = p.getBoolean("sleep_only", true),
+            early = p.getBoolean("early", false),
             startedAt = instant("started_at") ?: now(),
             slept = Duration.ofMillis(p.getLong("slept", 0)),
             asleepSince = instant("asleep_since"),
@@ -93,6 +99,7 @@ object Session {
                 .putString("kind", state.kind.name)
                 .putLong("target", state.target.toMillis())
                 .putBoolean("sleep_only", state.sleepOnly)
+                .putBoolean("early", state.early)
                 .putLong("started_at", state.startedAt.toEpochMilli())
                 .putLong("slept", state.slept.toMillis())
                 .putLong("asleep_since", state.asleepSince?.toEpochMilli() ?: 0)
@@ -125,11 +132,13 @@ object Session {
         withdraw(context, address, current(context))
         cleanup(context)
 
-        val expiry = Settings(context).expiryHours
+        val settings = Settings(context)
+        val expiry = settings.expiryHours
         var state = State(
             kind = kind,
             target = target,
             sleepOnly = sleepOnly,
+            early = sleepOnly && settings.earlyAlarm,
             startedAt = now,
             slept = Duration.ZERO,
             asleepSince = null,
@@ -138,7 +147,7 @@ object Session {
             deadline = if (expiry > 0) now.plus(Duration.ofHours(expiry.toLong())) else null,
         )
         EventLog.add(context, context.getString(R.string.log_started, describe(context, state)))
-        if (!sleepOnly) {
+        if (!sleepOnly || state.early) {
             state = state.copy(wakeAt = wakeTime(now, target, latest))
             Gadgetbridge.setAlarm(context, address, state.wakeAt!!)
         }
@@ -170,7 +179,7 @@ object Session {
 
         val address = Settings(context).watchAddress ?: return
         val wakeAt = wakeTime(now, state.target - state.slept, state.latest)
-        Gadgetbridge.setAlarm(context, address, wakeAt)
+        moveAlarm(context, address, state.wakeAt, wakeAt)
         val updated = state.copy(asleepSince = now, wakeAt = wakeAt)
         save(context, updated)
         Scheduler.scheduleSession(context, updated)
@@ -210,9 +219,18 @@ object Session {
             finish(context, state)
             return
         }
-        Settings(context).watchAddress?.let { Gadgetbridge.dismissAlarms(context, it) }
-        EventLog.add(context, context.getString(R.string.log_paused, slept.toMinutes(), state.target.toMinutes()))
-        val updated = state.copy(slept = slept, asleepSince = null, wakeAt = null)
+        // Early: the earliest the rest of the sleep could be done is if it started right now
+        val wakeAt = if (state.early) wakeTime(now, state.target - slept, state.latest) else null
+        Settings(context).watchAddress?.let { moveAlarm(context, it, state.wakeAt, wakeAt) }
+        EventLog.add(
+            context,
+            if (wakeAt != null) {
+                context.getString(R.string.log_paused_early, slept.toMinutes(), state.target.toMinutes(), Format.time(context, wakeAt))
+            } else {
+                context.getString(R.string.log_paused, slept.toMinutes(), state.target.toMinutes())
+            }
+        )
+        val updated = state.copy(slept = slept, asleepSince = null, wakeAt = wakeAt)
         save(context, updated)
         Scheduler.scheduleSession(context, updated)
     }
@@ -257,6 +275,13 @@ object Session {
         if (pendingCleanup(context) == null) return
         prefs(context).edit().remove("cleanup_at").apply()
         Settings(context).watchAddress?.let { Gadgetbridge.dismissAlarms(context, it) }
+    }
+
+    /** Gadgetbridge can't move an alarm, so a move is a dismissal followed by a new alarm. */
+    private fun moveAlarm(context: Context, address: String, from: Instant?, to: Instant?) {
+        if (from == to) return
+        if (from != null) Gadgetbridge.dismissAlarms(context, address)
+        if (to != null) Gadgetbridge.setAlarm(context, address, to)
     }
 
     private fun withdraw(context: Context, address: String, state: State?) {
