@@ -139,3 +139,19 @@ between the interactive mockups "Stable layout A" (round button anchored at the 
 - Round button (agreed): the darkest ring stays at the same radius in both states. Disarmed: glow
   fading outward from it. Armed: glow fading inward from it, its inner edge slowly breathing
   deeper and back; nothing scales.
+
+### Pane layout (round 2 decision)
+Mockup canvas: "WakeBridge redesign mockups" (claude.ai artifact F9mU4TVnatMgD7FwGxk2tv);
+copies of the final candidates and their generator are in docs/mockups/.
+B (round button at the top) is ruled out. **A is preferred, C stays an option** (possibly both
+as a Settings choice, mindful of option creep):
+- **A**: status card on top; Once/Every toggle + caption; sleep amount; Wake me; extra row
+  (Night: Include today's naps, Day: Napped today); the round button centred in the space left
+  below them (not at the extreme bottom), so it's within thumb reach.
+- **C**: Once/Every toggle + caption; sleep amount; the round button centred; Wake me and the
+  extra row right above the status card, which sits at the bottom just above the tab bar
+  (where the eye is when switching tabs).
+- In both: every block has a fixed height and Day/Night have the same blocks, so the round
+  button is in the same place in both tabs and nothing moves when tapping.
+- **The panes must never scroll.** On short screens or large fonts, the free space around the
+  round button shrinks first, then the button itself (down to ~120 dp), then the spacing.
