@@ -155,3 +155,5 @@ as a Settings choice, mindful of option creep):
   button is in the same place in both tabs and nothing moves when tapping.
 - **The panes must never scroll.** On short screens or large fonts, the free space around the
   round button shrinks first, then the button itself (down to ~120 dp), then the spacing.
+- Timeline landmarks (trial): a hazy, muted sun glow behind both 12s and a hazy pale moon behind
+  00, subtle enough not to compete with the tab icons; numbers stay on top.
