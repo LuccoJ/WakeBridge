@@ -136,3 +136,6 @@ between the interactive mockups "Stable layout A" (round button anchored at the 
 - The one-line caption under the Once/Every toggle explains the selected mode (agreed).
 - Connection chip: Bluetooth icon + watch name; green when connected, red with a crossed-out
   Bluetooth icon when not; "connected" only in the accessibility label.
+- Round button (agreed): the darkest ring stays at the same radius in both states. Disarmed: glow
+  fading outward from it. Armed: glow fading inward from it, its inner edge slowly breathing
+  deeper and back; nothing scales.
