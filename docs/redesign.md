@@ -78,3 +78,44 @@ reference for the next version of the app; the canvas also holds rejected varian
 - Italian: gendered words use Android 14's grammatical inflection (values-it-feminine,
   values-it-masculine) with a neutral fallback using a slash: "Ancora sveglio/a".
   Never "sveglio, sveglia" or "sveglia" twice: say "suona alle 14:20".
+
+## Round 2: feedback on 0.3.0 (to do)
+
+Status: recorded; layout changes to be settled with mockups first.
+
+### Timeline
+- Default side: **left** (keep the Settings option).
+- The thresholds can't be dragged so far that the window gets shorter than the sleep amount
+  (no more silently shrinking the sleep). Trying shows a toast: "Decrease the sleep amount to
+  shorten the night". Conversely, trying to slide the sleep amount past the window shows
+  "Widen the night window to sleep longer".
+- Hour labels follow the system 12/24-hour setting. In 12-hour mode, AM/PM goes on a separate
+  line under the number, to keep the track narrow.
+- More anchors: every 3 hours (12, 15, 18, 21, 00, 03, 06, 09, 12).
+- While dragging a threshold, a tooltip beside the finger shows the time it's being moved to
+  (the Day tab otherwise never shows the night's times).
+
+### Nothing should move when tapped
+- Switching "Next nap" / "Every nap" adds lines to the status card, pushing everything down,
+  including the buttons just tapped.
+- The round button sits at a different height in Day and Night.
+- "Arm tonight" adds a status line, the view no longer fits, and the button moves down.
+→ Fixed-height status card and a fixed position for the round button, the same in both tabs.
+  Mockups to decide where the varying text goes.
+
+### Names and navigation
+- Rename the tabs "Day naps" / "Night sleep" (also ties in with the tile). If too long for the
+  bottom bar, "Daytime" / "Nighttime".
+- Long-pressing the tile opens the Day or Night tab, whichever applies (a running night: Night;
+  otherwise Day), never the last tab used (it came back on Settings). Starting sleep from there
+  must be one obvious tap: the round button.
+
+### Calmer updates
+- While dragging the sleep slider, only the big number next to it changes; the "Wake me"
+  options update when the slider is released.
+- "Armed for tonight from 22:45" → "Armed for tonight": the window is shown right below.
+  (No reason to repeat it.)
+
+### Round button
+- Running: a pulsing gradient moving **inward**, the mirror image of the idle halo (which fades
+  outward), so the two states look like one design.
