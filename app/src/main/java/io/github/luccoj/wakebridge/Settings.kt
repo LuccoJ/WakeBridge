@@ -116,7 +116,7 @@ class Settings(context: Context) {
     // Appearance
 
     val timelineOnLeft: Boolean
-        get() = prefs.getString(KEY_TIMELINE_SIDE, "right") == "left"
+        get() = prefs.getString(KEY_TIMELINE_SIDE, "left") == "left"
 
     private fun mode(key: String): WakeMode =
         prefs.getString(key, null)?.let { runCatching { WakeMode.valueOf(it) }.getOrNull() } ?: WakeMode.SLEEP_ONLY

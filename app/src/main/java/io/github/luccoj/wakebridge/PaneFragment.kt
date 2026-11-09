@@ -63,11 +63,24 @@ class PaneFragment : Fragment() {
             Scheduler.scheduleNight(requireContext())
             refresh()
         }
-        view.findViewById<Slider>(R.id.amount).addOnChangeListener { _, value, fromUser ->
+        val slider = view.findViewById<Slider>(R.id.amount)
+        slider.addOnChangeListener { _, value, fromUser ->
             if (!fromUser) return@addOnChangeListener
             if (night) settings.nightMinutes = value.toInt() else settings.napMinutes = value.toInt()
-            refresh()
+            // While dragging only the amount and the preview change; the rest on release
+            view.findViewById<TextView>(R.id.amount_value).text = Format.minutes(requireContext(), value.toInt())
+            view.findViewById<TimelineView>(R.id.timeline).previewMinutes = value.toInt()
         }
+        slider.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
+            override fun onStartTrackingTouch(slider: Slider) = Unit
+
+            override fun onStopTrackingTouch(slider: Slider) {
+                if (night && slider.value >= slider.valueTo) {
+                    Toast.makeText(requireContext(), R.string.toast_widen_night, Toast.LENGTH_SHORT).show()
+                }
+                refresh()
+            }
+        })
         view.findViewById<RadioGroup>(R.id.wake_mode).setOnCheckedChangeListener { _, id ->
             if (binding) return@setOnCheckedChangeListener
             val mode = when (id) {
@@ -93,6 +106,10 @@ class PaneFragment : Fragment() {
             }
 
             override fun onThresholdTapped(start: Boolean) = pickThreshold(start)
+
+            override fun onWindowLimit() {
+                Toast.makeText(requireContext(), R.string.toast_shorten_night, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -152,6 +169,10 @@ class PaneFragment : Fragment() {
             val endAxis = Math.floorMod(newEnd.toSecondOfDay() / 60 - 12 * 60, 24 * 60).let { if (it == 0) 1440 else it }
             if (length < 60 || startAxis >= endAxis) {
                 Toast.makeText(requireContext(), R.string.night_window_invalid, Toast.LENGTH_LONG).show()
+                return@TimePickerDialog
+            }
+            if (length < settings.nightMinutes) {
+                Toast.makeText(requireContext(), R.string.toast_shorten_night, Toast.LENGTH_LONG).show()
                 return@TimePickerDialog
             }
             settings.nightStart = newStart
@@ -311,6 +332,7 @@ class PaneFragment : Fragment() {
             nightEnd = settings.nightEnd
             focusNight = night
             previewMinutes = minutes
+            minWindowMinutes = settings.nightMinutes
             this.now = now.atZone(Session.clock.zone).toLocalTime()
         }
         binding = false
@@ -343,7 +365,7 @@ class PaneFragment : Fragment() {
             )
             return when {
                 settings.nightEvery -> getString(R.string.status_every_night, Format.time(context, settings.nightStart)) to window
-                settings.nightTonight -> getString(R.string.status_armed_tonight, Format.time(context, settings.nightStart)) to window
+                settings.nightTonight -> getString(R.string.status_armed_tonight) to window
                 else -> getString(R.string.status_no_night) to window
             }
         }

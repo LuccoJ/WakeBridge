@@ -53,7 +53,7 @@
             app:title="@string/settings_timeline_side_title"
             app:entries="@array/timeline_side_entries"
             app:entryValues="@array/timeline_side_values"
-            app:defaultValue="right"
+            app:defaultValue="left"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 </PreferenceScreen>

@@ -9,9 +9,15 @@ import android.graphics.RectF
 import android.graphics.Shader
 import android.util.AttributeSet
 import android.util.TypedValue
+import android.graphics.drawable.ColorDrawable
+import android.text.format.DateFormat
+import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
+import android.view.ViewGroup
+import android.widget.PopupWindow
+import android.widget.TextView
 import java.time.LocalTime
 import kotlin.math.abs
 import kotlin.math.roundToInt
@@ -30,7 +36,13 @@ class TimelineView @JvmOverloads constructor(
         fun onWindowChanged(start: LocalTime, end: LocalTime, done: Boolean)
 
         fun onThresholdTapped(start: Boolean)
+
+        /** A threshold was dragged against [minWindowMinutes]: the window can't get shorter. */
+        fun onWindowLimit()
     }
+
+    /** The night can't get shorter than this (the night's sleep amount). */
+    var minWindowMinutes: Int = 60
 
     var listener: Listener? = null
 
@@ -65,7 +77,42 @@ class TimelineView @JvmOverloads constructor(
         textSize = sp(10f)
         isFakeBoldText = true
     }
+    private val small = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        textAlign = Paint.Align.CENTER
+        textSize = sp(7f)
+    }
     private val touchSlop = ViewConfiguration.get(context).scaledTouchSlop
+
+    /** Shows the time a threshold is being dragged to, beside the finger. */
+    private val tooltip: PopupWindow by lazy {
+        val label = TextView(context).apply {
+            setTextColor(context.getColor(R.color.on_night))
+            textSize = 16f
+            setPadding(dp(12f).toInt(), dp(6f).toInt(), dp(12f).toInt(), dp(6f).toInt())
+            background = android.graphics.drawable.GradientDrawable().apply {
+                cornerRadius = dp(10f)
+                setColor(context.getColor(R.color.night))
+            }
+        }
+        PopupWindow(label, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
+            setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            isTouchable = false
+            elevation = dp(4f)
+        }
+    }
+    private var limitShown = false
+
+    private fun showTooltip(time: LocalTime, atY: Float) {
+        val label = tooltip.contentView as TextView
+        label.text = Format.time(context, time)
+        label.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED)
+        val location = IntArray(2)
+        getLocationOnScreen(location)
+        // Beside the track, towards the pane content
+        val x = if (innerOnLeft) location[0] - label.measuredWidth - dp(8f).toInt() else location[0] + width + dp(8f).toInt()
+        val y = location[1] + atY.toInt() - label.measuredHeight / 2
+        if (tooltip.isShowing) tooltip.update(x, y, -1, -1) else tooltip.showAtLocation(this, Gravity.NO_GRAVITY, x, y)
+    }
 
     private enum class Drag { NONE, START, END }
 
@@ -133,20 +180,30 @@ class TimelineView @JvmOverloads constructor(
             previewBottom = -1f
         }
 
-        // Hour numbers inside the track, readable on whatever is under them
-        val labels = listOf("12", "18", "00", "06", "12")
-        labels.forEachIndexed { i, label ->
-            val fraction = i / 4f
-            val baseline = when (i) {
-                0 -> track.top + dp(4f) - text.ascent()
-                4 -> track.bottom - dp(4f) - text.descent()
-                else -> y(fraction * 1440) - (text.ascent() + text.descent()) / 2
+        // Hour numbers every 3 hours inside the track, readable on whatever is under them; on a
+        // 12-hour clock AM/PM goes on a second, smaller line to keep the track narrow
+        val twelve = !DateFormat.is24HourFormat(context)
+        for (i in 0..8) {
+            val fraction = i / 8f
+            val hour = (12 + i * 3) % 24
+            val number = if (twelve) (if (hour % 12 == 0) 12 else hour % 12).toString() else "%02d".format(hour)
+            val lineHeight = text.descent() - text.ascent()
+            val block = if (twelve) lineHeight * 1.7f else lineHeight
+            val center = when (i) {
+                0 -> track.top + dp(3f) + block / 2
+                8 -> track.bottom - dp(3f) - block / 2
+                else -> y(fraction * 1440)
             }
             val inNight = fraction > s && fraction < e
-            val onPreview = baseline in previewTop..previewBottom + text.textSize
+            val onPreview = center in previewTop..previewBottom
             val dark = inNight && focusNight && !onPreview
             text.color = if (dark) Color.WHITE else context.getColor(R.color.on_surface)
-            canvas.drawText(label, track.centerX(), baseline, text)
+            val top = center - block / 2
+            canvas.drawText(number, track.centerX(), top - text.ascent(), text)
+            if (twelve) {
+                small.color = text.color
+                canvas.drawText(if (hour < 12) "AM" else "PM", track.centerX(), top + lineHeight - small.ascent() * 0.9f, small)
+            }
         }
 
         // Now
@@ -185,6 +242,7 @@ class TimelineView @JvmOverloads constructor(
                 if (drag == Drag.NONE) return false
                 downY = event.y
                 moved = false
+                limitShown = false
                 parent?.requestDisallowInterceptTouchEvent(true)
                 return true
             }
@@ -196,16 +254,28 @@ class TimelineView @JvmOverloads constructor(
                 val snapped = (raw / 15.0).roundToInt() * 15
                 val startAxis = axis(nightStart)
                 val endAxis = axis(nightEnd).let { if (it == 0) 1440 else it }
+                val minimum = minWindowMinutes.coerceAtLeast(60)
+                val limited: Int
                 if (drag == Drag.START) {
-                    nightStart = timeAt(snapped.coerceIn(0, endAxis - 60))
+                    limited = snapped.coerceIn(0, endAxis - minimum)
+                    nightStart = timeAt(limited)
                 } else {
-                    nightEnd = timeAt(snapped.coerceIn(startAxis + 60, 1440))
+                    limited = snapped.coerceIn(startAxis + minimum, 1440)
+                    nightEnd = timeAt(limited)
                 }
+                val againstSleep = (drag == Drag.START && snapped > endAxis - minimum) ||
+                    (drag == Drag.END && snapped < startAxis + minimum)
+                if (againstSleep && minimum > 60 && !limitShown) {
+                    limitShown = true
+                    listener?.onWindowLimit()
+                }
+                showTooltip(if (drag == Drag.START) nightStart else nightEnd, y(limited.toFloat()))
                 listener?.onWindowChanged(nightStart, nightEnd, false)
                 return true
             }
             MotionEvent.ACTION_UP -> {
                 if (drag == Drag.NONE) return false
+                if (tooltip.isShowing) tooltip.dismiss()
                 if (moved) listener?.onWindowChanged(nightStart, nightEnd, true) else {
                     performClick()
                     listener?.onThresholdTapped(drag == Drag.START)
@@ -214,6 +284,7 @@ class TimelineView @JvmOverloads constructor(
                 return true
             }
             MotionEvent.ACTION_CANCEL -> {
+                if (tooltip.isShowing) tooltip.dismiss()
                 drag = Drag.NONE
                 return true
             }

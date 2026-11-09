@@ -89,7 +89,6 @@ class RoundButton @JvmOverloads constructor(
         val cx = width / 2f
         val cy = height / 2f
         val outer = min(width, height) / 2f
-        val inner = outer * 0.62f
 
         when (look) {
             Look.IDLE, Look.DISABLED -> {
@@ -105,15 +104,18 @@ class RoundButton @JvmOverloads constructor(
                 text.color = if (look == Look.IDLE) deep else grey
             }
             Look.RUNNING -> {
-                // Two rings moving outward and fading, half a cycle apart
-                for (offset in listOf(0f, 0.5f)) {
-                    val p = (phase + offset) % 1f
-                    paint.color = ColorUtils.setAlphaComponent(pastel, ((1f - p) * 150).toInt())
-                    canvas.drawCircle(cx, cy, inner + (outer - inner) * p, paint)
-                }
-                paint.color = deep
-                canvas.drawCircle(cx, cy, inner, paint)
-                text.color = Color.WHITE
+                // The idle halo mirrored: strongest at the ring, fading inward, gently breathing
+                val breathe = (1 - kotlin.math.cos(phase * 2 * Math.PI).toFloat()) / 2
+                val fadeStart = 0.22f + 0.12f * breathe
+                paint.shader = RadialGradient(
+                    cx, cy, outer,
+                    intArrayOf(Color.TRANSPARENT, Color.TRANSPARENT, ColorUtils.setAlphaComponent(pastel, 120), ColorUtils.setAlphaComponent(deep, 235), Color.TRANSPARENT, Color.TRANSPARENT),
+                    floatArrayOf(0f, fadeStart, (fadeStart + 0.68f) / 2, 0.68f, 0.72f, 1f),
+                    Shader.TileMode.CLAMP
+                )
+                canvas.drawCircle(cx, cy, outer, paint)
+                paint.shader = null
+                text.color = deep
             }
         }
 

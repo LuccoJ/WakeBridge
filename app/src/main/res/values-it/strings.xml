@@ -8,8 +8,8 @@
     <string name="from_time">Dalle %s</string>
 
     <!-- Tabs -->
-    <string name="tab_day">Giorno</string>
-    <string name="tab_night">Notte</string>
+    <string name="tab_day">Pisolini</string>
+    <string name="tab_night">Sonno notturno</string>
     <string name="tab_settings">Impostazioni</string>
 
     <!-- Connection chip -->
@@ -26,7 +26,7 @@
     <string name="status_no_nap">Nessuna sveglia per il pisolino</string>
     <string name="status_no_night">Nessuna sveglia notturna</string>
     <string name="status_every_night">Ogni notte dalle %s</string>
-    <string name="status_armed_tonight">Attiva per stanotte dalle %s</string>
+    <string name="status_armed_tonight">Attiva per stanotte</string>
     <string name="status_night_active">La sveglia notturna è attiva</string>
     <string name="status_waiting">Ancora sveglio/a</string>
     <string name="status_waiting_alarm">Ancora sveglio/a, suona alle %s</string>
@@ -66,6 +66,8 @@
     <string name="stop">Ferma</string>
     <string name="snooze">Posticipa di 5 min</string>
     <string name="night_every_hint">La sveglia notturna si attiva da sola ogni notte all\'inizio della notte. Scegli \"Stanotte\" per attivarla a mano.</string>
+    <string name="toast_shorten_night">Riduci la quantità di sonno per accorciare la notte</string>
+    <string name="toast_widen_night">Allarga la finestra notturna per dormire di più</string>
     <string name="night_window_invalid">La notte deve durare almeno un\'ora, iniziare dopo mezzogiorno e finire prima del mezzogiorno successivo.</string>
     <string name="timeline_description">Giorno e notte, da mezzogiorno a mezzogiorno. Notte dalle %1$s alle %2$s. Tocca un limite per cambiarlo.</string>
 

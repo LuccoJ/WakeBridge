@@ -24,20 +24,17 @@ class MainActivity : AppCompatActivity() {
             true
         }
         if (savedInstanceState == null) {
-            nav.selectedItemId = when {
-                intent.getBooleanExtra(EXTRA_SETTINGS, false) -> R.id.tab_settings
-                Session.current(this)?.kind == Session.Kind.NIGHT -> R.id.tab_night
-                else -> R.id.tab_day
-            }
+            nav.selectedItemId = tabFor(intent)
+        } else if (intent.action == ACTION_TILE_PREFERENCES) {
+            nav.selectedItemId = tabFor(intent)
         }
         askForNotifications()
     }
 
     override fun onNewIntent(intent: android.content.Intent) {
         super.onNewIntent(intent)
-        if (intent.getBooleanExtra(EXTRA_SETTINGS, false)) {
-            findViewById<BottomNavigationView>(R.id.bottom_nav).selectedItemId = R.id.tab_settings
-        }
+        // The tile's long press, or the launcher: show the tab that applies now
+        findViewById<BottomNavigationView>(R.id.bottom_nav).selectedItemId = tabFor(intent)
     }
 
     private fun show(id: Int) {
@@ -72,7 +69,15 @@ class MainActivity : AppCompatActivity() {
         notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
     }
 
+    /** Night sleep while a night is running or armed for tonight, else Day naps. */
+    private fun tabFor(intent: android.content.Intent?): Int = when {
+        intent?.getBooleanExtra(EXTRA_SETTINGS, false) == true -> R.id.tab_settings
+        Session.current(this)?.kind == Session.Kind.NIGHT || Settings(this).nightTonight -> R.id.tab_night
+        else -> R.id.tab_day
+    }
+
     companion object {
         const val EXTRA_SETTINGS = "settings"
+        private const val ACTION_TILE_PREFERENCES = "android.service.quicksettings.action.QS_TILE_PREFERENCES"
     }
 }

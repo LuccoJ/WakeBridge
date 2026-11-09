@@ -10,8 +10,8 @@
     <string name="from_time">From %s</string>
 
     <!-- Tabs -->
-    <string name="tab_day">Day</string>
-    <string name="tab_night">Night</string>
+    <string name="tab_day">Day naps</string>
+    <string name="tab_night">Night sleep</string>
     <string name="tab_settings">Settings</string>
 
     <!-- Connection chip -->
@@ -28,7 +28,7 @@
     <string name="status_no_nap">No nap alarm</string>
     <string name="status_no_night">No night alarm</string>
     <string name="status_every_night">Every night from %s</string>
-    <string name="status_armed_tonight">Armed for tonight from %s</string>
+    <string name="status_armed_tonight">Armed for tonight</string>
     <string name="status_night_active">The night alarm is on</string>
     <string name="status_waiting">Not asleep yet</string>
     <string name="status_waiting_alarm">Not asleep yet, alarm %s</string>
@@ -68,6 +68,8 @@
     <string name="stop">Stop</string>
     <string name="snooze">Snooze 5 min</string>
     <string name="night_every_hint">The night alarm arms itself every night at the night\'s start. Choose \"Tonight\" to arm it by hand.</string>
+    <string name="toast_shorten_night">Decrease the sleep amount to shorten the night</string>
+    <string name="toast_widen_night">Widen the night window to sleep longer</string>
     <string name="night_window_invalid">The night must last at least 1 hour, starting after noon and ending before the next noon.</string>
     <string name="timeline_description">Day and night, noon to noon. Night from %1$s to %2$s. Tap a threshold to change it.</string>
 

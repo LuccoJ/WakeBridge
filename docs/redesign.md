@@ -81,7 +81,9 @@ reference for the next version of the app; the canvas also holds rejected varian
 
 ## Round 2: feedback on 0.3.0 (to do)
 
-Status: recorded; layout changes to be settled with mockups first.
+Status: done in 0.3.1, except "Nothing should move when tapped", which waits for a choice
+between the interactive mockups "Stable layout A" (round button anchored at the bottom) and
+"Stable layout B" (round button at the top, status under it).
 
 ### Timeline
 - Default side: **left** (keep the Settings option).
