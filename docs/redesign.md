@@ -155,5 +155,6 @@ as a Settings choice, mindful of option creep):
   button is in the same place in both tabs and nothing moves when tapping.
 - **The panes must never scroll.** On short screens or large fonts, the free space around the
   round button shrinks first, then the button itself (down to ~120 dp), then the spacing.
-- Timeline landmarks (trial): a hazy, muted sun glow behind both 12s and a hazy pale moon behind
-  00, subtle enough not to compete with the tab icons; numbers stay on top.
+- Timeline landmarks (agreed): a soft warm sun glow (~30 dp, little blur) behind both 12s and a
+  pale blue crescent (~28 dp, 80% opacity) behind 00; numbers stay on top. The top sun also
+  softens the timeline's top edge against the status card.
