@@ -121,3 +121,18 @@ between the interactive mockups "Stable layout A" (round button anchored at the 
 ### Round button
 - Running: a pulsing gradient moving **inward**, the mirror image of the idle halo (which fades
   outward), so the two states look like one design.
+
+### Status card text (agreed)
+- Fixed height (two lines, sized in sp so it follows the system font size, never the content);
+  each line single-line, cut off with "…"; the title auto-sizes from 20 down to about 16 sp first.
+- The title states only the state, in two or three words; the second line carries the numbers,
+  alarm time first:
+  - "Not asleep yet" / "Alarm 14:20, nap of 20 min"
+  - "Asleep" / "Alarm 14:25, slept 12 of 20 min"
+  - "Armed for tonight" / "Night 22:45 to 08:00, 7 h 30 min"
+  - Italian: "Ancora sveglio/a" / "Suona alle 14:20, pisolino di 20 min", "Sonno in corso" /
+    "Suona alle 14:25, dormito 12 min su 20", "Attiva per stanotte" / "Notte dalle 22:45 alle
+    08:00, 7 h 30 min".
+- The one-line caption under the Once/Every toggle explains the selected mode (agreed).
+- Connection chip: Bluetooth icon + watch name; green when connected, red with a crossed-out
+  Bluetooth icon when not; "connected" only in the accessibility label.
