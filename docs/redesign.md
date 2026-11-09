@@ -193,13 +193,60 @@ fix-third-party-alarms: SET_ALARM prefers unused slots, DISMISS_ALARM marks them
   or dragged, a legend appears: labelled arrows for now, the nap, night start, the night's
   sleep and night end (durations as brackets to scale). Both sleeps show in both tabs while
   the legend is up; outside it each tab shows only its own.
-- The pane fades with a gradient from the timeline's side, so the far side stays visible.
+- Backdrop: two mockups, a tint blending into the pane (TimelineLegend) and a raised panel
+  (TimelineLegendPanel). **The raised panel was chosen.** "Now" is small, grey and drawn under
+  the other labels; labels sit on the panel colour so they stay readable over it.
 - No "now" line on the timeline outside the legend.
 - Night start/end can be dragged by the handle or by their label and arrow; while dragging the
   label shows the live time and the other labels dim. This replaces the drag tooltip.
-- Shift work: no panning and no "now at the top". The axis is noon to noon, or midnight to
-  midnight when the night crosses noon (chosen automatically; crossing noon via the time picker).
+- Shift work: no panning and no "now at the top" (TimelineNowTop, rejected: the scale would move
+  on its own and a night viewed at night is cut in two). The axis is noon to noon, or midnight to
+  midnight when the night crosses noon, chosen automatically. Dragging stops at the track's ends
+  and the axis is frozen during a drag; crossing noon is done with the time picker (tap a handle
+  or its label). An "overshoot to wrap" drag gesture was considered and rejected.
 - Built in 0.5.0 with the raised-panel backdrop (TimelineLegendPanel): times follow the system
   12/24-hour setting; the nap goes in the longer part of the day the track shows; the "tap to
   close" line goes to whichever end of the panel is free. ScreenshotTest renders the panes with
   `-Pscreenshots=DIR`.
+
+## Status and how to continue (end of 9 November 2026)
+- The mode control stays a toggle (Manual / Automatic); the switch mockup (ModeSwitch) was not
+  chosen.
+- 0.5.0 is the build being tested in real sleep. Open issue seen in screenshots: a night handle
+  exactly on an hour mark (the default 21:00) hides that hour's number.
+- The Settings > Appearance timeline side mirrors everything, legend included.
+- Mockups: canvas "WakeBridge redesign mockups" (claude.ai artifact F9mU4TVnatMgD7FwGxk2tv);
+  copies and their generators in docs/mockups/ (stable_mockups.py, mode_mockups.py imports it,
+  legend_mockups.py imports mode_mockups.py; each takes the output folder as its argument).
+
+### Building
+- No Google SDK licence is accepted anywhere. setup-sdk.sh from LuccoJ/android-development
+  (private; branch claude/trusting-bell-usyza9) assembles an SDK from Robolectric's android-all
+  (Apache-2.0, stubbed to the public API), the JDK's java.* classes and Debian/Ubuntu build
+  tools: `setup-sdk.sh --sdk DIR --api 37 --build-tools 36.0.0`, then
+  `ANDROID_HOME=DIR ./gradlew assembleDebug testDebugUnitTest lintDebug`. AGP prints "License
+  for package Android SDK Platform-Tools not accepted": it offered a download, nothing was
+  accepted or fetched.
+- GitHub Actions (.github/workflows/build.yml) does the same on ubuntu-24.04 after deleting the
+  runner's preinstalled Google SDK, and uploads the APK. **It fails**: it checks out
+  LuccoJ/android-development, which is private, and the workflow's token can't read it.
+  Pending choice: make that repository public, copy its recipe (three files) into this one, or
+  give the workflow a read-only token as a secret. Actions' Node 20 deprecation warnings are
+  harmless for now.
+- Signing: the debug key that signed every APK so far is kept by the owner; stored base64 as the
+  repository secret DEBUG_KEYSTORE, CI builds install over local ones. Never commit it; publishing
+  would need a real release key.
+- ScreenshotTest renders the panes with `-Pscreenshots=DIR` (Robolectric native graphics),
+  for checking layouts without a phone.
+
+### Gadgetbridge
+- WakeBridge needs, per watch: Device actions On Fall Asleep / On Wake Up → Send Broadcast to
+  package io.github.luccoj.wakebridge, and Developer settings > Intent API > Allow 3rd party apps
+  to set alarms.
+- Stock Gadgetbridge puts a third-party alarm in the first alarm that is off and untitled (it can
+  be one of the user's own: naming them protects them) and, on Huami watches, may send it
+  disabled because the slot is still marked unused.
+- The owner's fork (github.com/LuccoJ/Gadgetbridge, branch fix-third-party-alarms, synced with
+  upstream) fixes both: SET_ALARM clears "unused" when enabling and prefers unused slots;
+  DISMISS_ALARM marks the slot unused again. Not yet built or tested; no upstream request for now.
+  Commits there carry an "AI-assisted" note, per Gadgetbridge's policy.
