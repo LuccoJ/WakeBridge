@@ -12,22 +12,29 @@ The app is in English and Italian.
 
 ## Features
 
-- **Naps**: pick a length (5 min to 3 h) and start; counting begins when you fall asleep.
-  Turn off "Count only time asleep" for a plain countdown that starts right away.
-- **Alarm right away** (on by default): when counting only sleep, the watch always holds an
-  alarm for the earliest time the sleep could be complete, moved later as sleep is detected.
-  A missed event or a disconnection can only wake you early, never not at all.
-- **Quick Settings tile**: tap for a dialog over the panel to start a nap (or, with "One tap
-  starts the nap", start right away); tap during a session to confirm cancelling it;
-  long-press to open the app.
-- **Automatic naps**: falling asleep outside night-time starts a nap of a preset length.
-- **Nightly alarm**: every night at a set time, arm an alarm for a full night's sleep
-  (5 to 10 hours of actual sleep), with an optional "never later than" wake-up time.
-  A nap still running when night starts hands over to the night alarm.
-- **Auto-cancel**: an alarm that hasn't gone off within a set number of hours
-  (12 by default) is cancelled.
-- **Setup screen**: step-by-step Gadgetbridge settings, a test alarm, and a log of the events
-  received, to check everything gets through.
+The design is recorded in [docs/redesign.md](docs/redesign.md).
+
+- **Day and Night panes**, mirroring each other: "Next nap" / "Every nap" and "Tonight" /
+  "Every night", a sleep amount slider, and **Wake me**:
+  - after the amount of actual sleep (awakenings pause the count),
+  - the amount after first falling asleep,
+  - a plain countdown (naps) or at the night's end (nights).
+- **Vertical timeline** of the day, noon to noon: drag the night's start and end (or tap them
+  for exact times). They also decide when automatic naps can start. Left or right side, in
+  Settings.
+- **Nights** never ring later than the night's end, wait with an alarm there until sleep is
+  detected, and push the alarm later by the time spent awake. Today's naps can count toward the
+  night.
+- **Fail-safe alarm**: naps hold the earliest possible alarm from the start, so a missed event
+  can only wake you early.
+- **Phone backup alarm**: the phone rings a few minutes after the watch alarm unless the watch
+  reports waking up. With the watch disconnected, only the plain countdown can start, and it
+  rings on the phone.
+- **Quick Settings tile**: tap starts the Day pane's nap; tap during a session cancels it, with
+  a few seconds to undo; long-press opens the app.
+- **Setup screen**: Gadgetbridge settings step by step, phone permissions, a test alarm and an
+  event log.
+- English and Italian (with gendered Italian forms on Android 14+).
 
 ## How it works
 

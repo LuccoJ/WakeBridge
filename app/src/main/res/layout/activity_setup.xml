@@ -108,6 +108,20 @@
 
         <TextView
             style="@style/SetupHeading"
+            android:text="@string/setup_step5_title" />
+
+        <TextView
+            style="@style/SetupBody"
+            android:text="@string/setup_step5_body" />
+
+        <LinearLayout
+            android:id="@+id/permissions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <TextView
+            style="@style/SetupHeading"
             android:text="@string/setup_log_title" />
 
         <TextView

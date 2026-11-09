@@ -1,38 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Durations -->
+    <!-- Durations and times -->
     <string name="format_minutes">%d min</string>
     <string name="format_hours">%d h</string>
     <string name="format_hours_minutes">%1$d h %2$d min</string>
+    <string name="window">dalle %1$s alle %2$s</string>
+    <string name="from_time">Dalle %s</string>
 
-    <!-- Status, shared by the main screen and the tile -->
+    <!-- Tabs -->
+    <string name="tab_day">Giorno</string>
+    <string name="tab_night">Notte</string>
+    <string name="tab_settings">Impostazioni</string>
+
+    <!-- Connection chip -->
+    <string name="watch">Orologio</string>
+    <string name="chip_connected">%s connesso</string>
+    <string name="chip_disconnected">%s non connesso</string>
+    <string name="chip_no_watch">Nessun orologio</string>
+    <string name="connected">connesso</string>
+    <string name="not_connected">non connesso</string>
+
+    <!-- Status, shared by the panes and the tile. Gendered words: see values-it-feminine/masculine -->
+    <string name="status_label">Stato</string>
     <string name="status_idle">Nessuna sveglia impostata</string>
-    <string name="status_waiting">In attesa del sonno</string>
-    <string name="status_waiting_slept">In pausa, dormito %1$s su %2$s</string>
-    <string name="status_waiting_alarm">In attesa del sonno, sveglia non prima delle %s</string>
-    <string name="status_waiting_slept_alarm">In pausa, dormito %1$s su %2$s, sveglia non prima delle %3$s</string>
-    <string name="status_asleep">Sonno in corso, sveglia alle %s</string>
-    <string name="status_alarm_at">Sveglia alle %s</string>
+    <string name="status_no_nap">Nessuna sveglia per il pisolino</string>
+    <string name="status_no_night">Nessuna sveglia notturna</string>
+    <string name="status_every_night">Ogni notte dalle %s</string>
+    <string name="status_armed_tonight">Attiva per stanotte dalle %s</string>
+    <string name="status_night_active">La sveglia notturna è attiva</string>
+    <string name="status_waiting">Ancora sveglio/a</string>
+    <string name="status_waiting_alarm">Ancora sveglio/a, suona alle %s</string>
+    <string name="status_awake_slept">Sveglio/a, dormito %1$s su %2$s</string>
+    <string name="status_awake_slept_alarm">Sveglio/a, dormito %1$s su %2$s, suona alle %3$s</string>
+    <string name="status_asleep">Sonno in corso, suona alle %s</string>
+    <string name="status_alarm_at">Suona alle %s</string>
     <string name="kind_nap">Pisolino</string>
     <string name="kind_night">Notte</string>
     <string name="mode_sleep_only">conta solo il sonno</string>
+    <string name="mode_from_first_sleep">dal primo addormentamento</string>
     <string name="mode_countdown">conto alla rovescia semplice</string>
-
-    <!-- Main screen -->
-    <string name="setup_needed">Per funzionare, WakeBridge ha bisogno di alcune impostazioni in Gadgetbridge.</string>
-    <string name="start_nap">Inizia pisolino</string>
-    <string name="cancel">Annulla sveglia</string>
-    <string name="nap_section">Pisolino</string>
-    <string name="nap_length">Durata: %s</string>
-    <string name="nap_length_description">Durata del pisolino in minuti</string>
-    <string name="sleep_only_title">Conta solo il tempo addormentato</string>
-    <string name="sleep_only_summary">Parte quando l\'orologio rileva il sonno, e si ferma durante i risvegli</string>
-    <string name="tile_hint">Suggerimento: aggiungi il riquadro di WakeBridge alle Impostazioni rapide. Toccalo per iniziare un pisolino o annullarlo; tienilo premuto per tornare qui.</string>
+    <string name="mode_night_end">alla fine della notte</string>
     <string name="details_slept">Dormito finora: %1$s su %2$s</string>
-    <string name="details_latest">Non oltre le %s</string>
-    <string name="details_deadline">Annullata se non suona entro le %s</string>
-    <string name="details_night_scheduled">Ogni notte: attivata alle %1$s per %2$s di sonno</string>
-    <string name="settings_title">Impostazioni</string>
+    <string name="details_phone_only">L\'orologio non era connesso: suonerà il telefono</string>
+    <string name="last_sleep">Ultimo sonno rilevato: %s</string>
+    <string name="every_nap_details">I pisolini partono da soli tra le %1$s e le %2$s</string>
+    <string name="setup_needed">Per funzionare, WakeBridge ha bisogno di alcune impostazioni in Gadgetbridge.</string>
+    <string name="disconnected_hint">L\'orologio non è connesso: per contare il sonno serve. Riconnettilo in Gadgetbridge, o scegli il conto alla rovescia semplice, che suona sul telefono.</string>
+
+    <!-- Panes -->
+    <string name="next_nap">Prossimo pisolino</string>
+    <string name="every_nap">Ogni pisolino</string>
+    <string name="tonight">Stanotte</string>
+    <string name="every_night">Ogni notte</string>
+    <string name="sleep_amount">Quantità di sonno</string>
+    <string name="wake_me">Svegliami</string>
+    <string name="wake_sleep_only">Dopo %s di sonno</string>
+    <string name="wake_from_first">%s dopo essermi addormentato/a</string>
+    <string name="wake_countdown">%s da adesso</string>
+    <string name="wake_night_end">Alla fine della notte, alle %s</string>
+    <string name="include_naps">Conta i pisolini di oggi</string>
+    <string name="start_nap">Inizia pisolino</string>
+    <string name="stop_nap">Ferma pisolino</string>
+    <string name="arm_tonight">Attiva stanotte</string>
+    <string name="disarm">Disattiva</string>
+    <string name="stop">Ferma</string>
+    <string name="snooze">Posticipa di 5 min</string>
+    <string name="night_every_hint">La sveglia notturna si attiva da sola ogni notte all\'inizio della notte. Scegli \"Stanotte\" per attivarla a mano.</string>
+    <string name="night_window_invalid">La notte deve durare almeno un\'ora, iniziare dopo mezzogiorno e finire prima del mezzogiorno successivo.</string>
+    <string name="timeline_description">Giorno e notte, da mezzogiorno a mezzogiorno. Notte dalle %1$s alle %2$s. Tocca un limite per cambiarlo.</string>
 
     <!-- Tile -->
     <string name="tile_label">Pisolino</string>
@@ -40,24 +75,38 @@
     <string name="tile_setup_needed">Tocca per configurare</string>
     <string name="tile_idle_sleep_only">%s di sonno</string>
     <string name="tile_idle_countdown">%s</string>
-    <string name="tile_cancel_question">Annullare questa sveglia? (%s)</string>
-    <string name="keep">Mantieni</string>
-    <string name="open_app">Apri l\'app</string>
+    <string name="tile_cancelled">Pisolino annullato</string>
+    <string name="tile_undo">Tocca per ripristinare</string>
+    <string name="tile_disconnected">Orologio non connesso</string>
+
+    <!-- Phone backup alarm -->
+    <string name="channel_alarm">Sveglia di riserva sul telefono</string>
+    <string name="ring_title">È ora di svegliarsi</string>
+    <string name="ring_text">L\'orologio non ha segnalato il risveglio.</string>
 
     <!-- Event log -->
     <string name="log_started">Avviata: %s</string>
+    <string name="log_phone_only">L\'orologio non è connesso: suonerà solo il telefono</string>
     <string name="log_fell_asleep">Gadgetbridge: inizio del sonno</string>
     <string name="log_woke_up">Gadgetbridge: risveglio</string>
     <string name="log_paused">Risveglio: sveglia ritirata, dormito %1$d su %2$d min</string>
-    <string name="log_paused_early">Risveglio: dormito %1$d su %2$d min, sveglia non prima delle %3$s</string>
+    <string name="log_paused_alarm">Risveglio: dormito %1$d su %2$d min, suona alle %3$s</string>
     <string name="log_finished">Ora della sveglia raggiunta</string>
     <string name="log_cancelled">Annullata</string>
+    <string name="log_undone">Annullamento ripristinato</string>
     <string name="log_expired">Annullata: nessuna sveglia entro %d h</string>
-    <string name="log_auto_nap">Sonno fuori dalla notte: pisolino automatico</string>
+    <string name="log_auto_nap">Sonno durante il giorno: pisolino automatico</string>
     <string name="log_night_takeover">La notte è iniziata durante un pisolino: si passa alla sveglia notturna</string>
     <string name="log_nap_ended_by_night">La notte è iniziata durante un pisolino: pisolino annullato</string>
     <string name="log_night_skipped">La notte è iniziata, una sessione notturna è già attiva</string>
-    <string name="log_night_over">Fine della notte superata durante la veglia: sveglia notturna terminata</string>
+    <string name="log_night_over">Superata la fine della notte: sveglia notturna terminata</string>
+    <string name="log_naps_counted">I pisolini di oggi contano per %d min</string>
+    <string name="log_night_covered">I pisolini di oggi coprono già il sonno della notte: nessuna sveglia notturna</string>
+    <string name="log_night_disconnected">L\'orologio non è connesso all\'inizio della notte: il telefono suonerà alla fine della notte</string>
+    <string name="log_backup_cancelled">Risveglio: sveglia sul telefono annullata</string>
+    <string name="log_backup_ringing">Sveglia sul telefono in corso</string>
+    <string name="log_backup_stopped">Sveglia sul telefono fermata</string>
+    <string name="log_backup_snoozed">Sveglia sul telefono posticipata</string>
     <string name="log_test_alarm">Sveglia di prova inviata per le %s</string>
     <string name="log_test_alarm_removed">Rimozione della sveglia di prova inviata</string>
 
@@ -68,28 +117,25 @@
     <string name="settings_watch_manual">Inserisci l\'indirizzo a mano</string>
     <string name="settings_watch_manual_message">L\'indirizzo Bluetooth dell\'orologio, come appare nelle informazioni sul dispositivo in Gadgetbridge.</string>
     <string name="settings_watch_invalid">Non è un indirizzo Bluetooth (AA:BB:CC:DD:EE:FF)</string>
-    <string name="settings_tile_category">Riquadro delle Impostazioni rapide</string>
-    <string name="settings_tile_one_tap_title">Un tocco avvia il pisolino</string>
-    <string name="settings_tile_one_tap_summary">Toccare il riquadro avvia subito un pisolino con le impostazioni della schermata principale, invece di mostrarle prima</string>
+    <string name="setup_summary">Impostazioni di Gadgetbridge, permessi e registro eventi</string>
+    <string name="last_event">Ultimo evento: inizio del sonno, %s</string>
     <string name="settings_alarms_category">Sveglie</string>
-    <string name="settings_early_title">Sveglia subito</string>
-    <string name="settings_early_summary">Quando si conta solo il tempo addormentato, tieni sempre una sveglia per il primo momento in cui il sonno potrebbe essere completo, spostandola più avanti quando viene rilevato il sonno. Se l\'orologio si disconnette o perde un evento, la sveglia arriva prima, mai dopo. Se non ti addormenti affatto, la sveglia suona comunque.</string>
-    <string name="settings_expiry_title">Annulla dopo (ore)</string>
-    <string name="settings_expiry_summary">Annulla una sveglia che non ha suonato dopo questo numero di ore dall\'avvio. 0 non annulla mai.</string>
-    <string name="settings_auto_nap_category">Pisolini automatici</string>
-    <string name="settings_auto_nap_title">Inizia un pisolino quando mi addormento</string>
-    <string name="settings_auto_nap_summary">Fuori dalla notte, addormentarsi avvia un pisolino che conta solo il tempo addormentato. Un pisolino ancora in corso all\'inizio della notte viene annullato, o sostituito dalla sveglia notturna.</string>
-    <string name="settings_auto_nap_minutes_title">Durata del pisolino automatico</string>
-    <string name="settings_night_category">Notte</string>
-    <string name="settings_night_title">Sveglia notturna</string>
-    <string name="settings_night_summary">Ogni notte, imposta una sveglia per una notte di sonno completa</string>
-    <string name="settings_night_arm_title">Inizio della notte</string>
-    <string name="settings_night_arm_summary">%s: la sveglia notturna si attiva e i pisolini automatici si fermano</string>
-    <string name="settings_night_minutes_title">Sonno notturno</string>
-    <string name="settings_night_latest_title">Fine della notte</string>
-    <string name="settings_night_latest_summary">%s: i pisolini automatici riprendono</string>
-    <string name="settings_night_latest_enabled_title">Non svegliarmi mai dopo la fine della notte</string>
-    <string name="settings_night_latest_enabled_summary">La sveglia notturna suona al più tardi alla fine della notte, anche se hai dormito meno</string>
+    <string name="settings_fail_safe_title">Sveglia di sicurezza</string>
+    <string name="settings_fail_safe_summary">Tieni una sveglia sull\'orologio anche prima che venga rilevato il sonno. Pisolini: dopo la durata del pisolino. Notti: alla fine della notte.</string>
+    <string name="settings_backup_title">Sveglia di riserva sul telefono</string>
+    <string name="settings_backup_summary">Fai suonare il telefono se l\'orologio non segnala il risveglio qualche minuto dopo la sua sveglia</string>
+    <string name="settings_backup_delay_title">Ritardo della riserva (minuti)</string>
+    <string name="settings_expiry_title">Annulla le sveglie mai suonate (ore)</string>
+    <string name="settings_expiry_summary">0 non le annulla mai</string>
+    <string name="settings_tile_category">Riquadro delle Impostazioni rapide</string>
+    <string name="settings_tile_title">Un tocco avvia il pisolino del pannello Giorno</string>
+    <string name="settings_tile_summary">Tocca durante un pisolino per annullarlo, con qualche secondo per ripristinarlo. Tieni premuto per aprire l\'app.</string>
+    <string name="settings_appearance_category">Aspetto</string>
+    <string name="settings_timeline_side_title">Lato della linea del tempo</string>
+    <string-array name="timeline_side_entries">
+        <item>Destra</item>
+        <item>Sinistra</item>
+    </string-array>
 
     <!-- Setup -->
     <string name="setup_title">Configurazione e informazioni</string>
@@ -100,13 +146,24 @@
     <string name="setup_copied">Copiato</string>
     <string name="setup_step1_more">Poi fai lo stesso in Quando ci si sveglia.\n\nSe il tuo orologio non ha Azioni sul dispositivo, o non ha Quando ci si addormenta, non segnala quando ti addormenti: funziona solo il conto alla rovescia semplice.</string>
     <string name="setup_step2_title">2. Sveglie</string>
-    <string name="setup_step2_body">Nelle impostazioni dell\'orologio, apri Impostazioni sviluppatore e, sotto API Intenti, attiva Allow 3rd party apps to set alarms (non ancora tradotto in Gadgetbridge).\n\nWakeBridge usa uno spazio sveglia disattivato e senza nome. Tieni almeno una sveglia così nell\'elenco delle sveglie di Gadgetbridge. Le sveglie di WakeBridge si chiamano WakeBridge, ed è l\'unico tipo di sveglia che tocca.</string>
+    <string name="setup_step2_body">Nelle impostazioni dell\'orologio, apri Impostazioni sviluppatore e, sotto API Intenti, attiva Allow 3rd party apps to set alarms (non ancora tradotto in Gadgetbridge).\n\nWakeBridge usa uno spazio sveglia disattivato e senza nome. Tieni almeno una sveglia così nell\'elenco delle sveglie di Gadgetbridge. Le sveglie di WakeBridge si chiamano WakeBridge, ed è l\'unico tipo di sveglia che tocca.\n\nProblema noto di Gadgetbridge con gli orologi Amazfit e Mi Band: può mettere la sveglia in uno spazio che considera inutilizzato, e mandarla all\'orologio disattivata. Se la sveglia di prova qui sotto non suona, apri l\'elenco delle sveglie di Gadgetbridge, mostra le sveglie inutilizzate, e accendi e spegni ogni sveglia sbiadita.</string>
     <string name="setup_step3_title">3. Orologio</string>
     <string name="setup_choose_watch">Scegli l\'orologio</string>
     <string name="setup_watch_chosen">Le sveglie vanno a: %s</string>
     <string name="setup_watch_none">Nessun orologio scelto</string>
     <string name="setup_step4_title">4. Verifica</string>
     <string name="setup_step4_body">Invia una sveglia di prova per circa 2 minuti da ora: dovrebbe comparire nell\'elenco delle sveglie di Gadgetbridge e suonare sull\'orologio. Se non succede, controlla il punto 2 e l\'indirizzo dell\'orologio. Poi rimuovila, per liberare lo spazio.\n\nLa prossima volta che ti addormenti con l\'orologio al polso, gli orari qui sotto dovrebbero cambiare.</string>
+    <string name="setup_step5_title">5. Telefono</string>
+    <string name="setup_step5_body">Per la sveglia di riserva sul telefono, e per sapere se l\'orologio è connesso, il telefono deve consentire:</string>
+    <string name="permission_notifications">Notifiche</string>
+    <string name="permission_exact_alarms">Sveglie e promemoria</string>
+    <string name="permission_full_screen">Sveglie a schermo intero</string>
+    <string name="permission_nearby">Dispositivi nelle vicinanze (connessione dell\'orologio)</string>
+    <string name="permission_battery">Uso della batteria senza restrizioni</string>
+    <string name="permission_ok">Consentito</string>
+    <string name="permission_missing">Non consentito</string>
+    <string name="permission_optional">Non consentito (facoltativo: rende i timer più puntuali)</string>
+    <string name="permission_allow">Consenti</string>
     <string name="setup_test_alarm">Sveglia di prova</string>
     <string name="setup_remove_test_alarm">Rimuovi la sveglia di prova</string>
     <string name="setup_never">mai</string>

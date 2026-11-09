@@ -1,9 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.WakeBridge" parent="Theme.Material3.DayNight">
-        <item name="colorPrimary">@color/primary</item>
-        <item name="colorOnPrimary">@color/on_primary</item>
+    <style name="Theme.WakeBridge.Base" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/accent_deep</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorPrimaryContainer">@color/accent_container</item>
+        <item name="colorOnPrimaryContainer">@color/on_accent_pastel</item>
+        <item name="colorSecondaryContainer">@color/accent_container</item>
+        <item name="colorOnSecondaryContainer">@color/on_accent_pastel</item>
+        <item name="android:colorBackground">@color/surface</item>
+        <item name="colorSurface">@color/surface</item>
     </style>
+
+    <style name="Theme.WakeBridge" parent="Theme.WakeBridge.Base" />
+
+    <!-- Screens with their own title bar -->
+    <style name="Theme.WakeBridge.WithActionBar" parent="Theme.Material3.DayNight">
+        <item name="colorPrimary">@color/accent_deep</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorPrimaryContainer">@color/accent_container</item>
+        <item name="colorOnPrimaryContainer">@color/on_accent_pastel</item>
+        <item name="android:colorBackground">@color/surface</item>
+    </style>
+
+    <style name="Theme.WakeBridge.Setup" parent="Theme.WakeBridge.WithActionBar" />
+
+    <style name="Theme.WakeBridge.Ring" parent="Theme.WakeBridge.Base" />
 
     <style name="SetupHeading">
         <item name="android:layout_width">match_parent</item>

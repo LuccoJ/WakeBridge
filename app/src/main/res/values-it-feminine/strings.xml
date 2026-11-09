@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android 14+: used when the user chose a grammatical gender ("terms of address") -->
+<resources>
+    <string name="status_waiting">Ancora sveglia</string>
+    <string name="status_waiting_alarm">Ancora sveglia, suona alle %s</string>
+    <string name="status_awake_slept">Sveglia, dormito %1$s su %2$s</string>
+    <string name="status_awake_slept_alarm">Sveglia, dormito %1$s su %2$s, suona alle %3$s</string>
+    <string name="wake_from_first">%s dopo essermi addormentata</string>
+</resources>

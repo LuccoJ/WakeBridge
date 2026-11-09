@@ -42,15 +42,16 @@ object Format {
         val slept = state.sleptAt(now).toMinutes().toInt()
         val alarm = state.wakeAt?.let { time(context, it) }
         return when {
-            !state.sleepOnly -> context.getString(R.string.status_alarm_at, alarm)
+            !state.counting || (state.mode == WakeMode.FROM_FIRST_SLEEP && state.firstSleepAt != null) ->
+                context.getString(R.string.status_alarm_at, alarm)
             state.asleepSince != null -> context.getString(R.string.status_asleep, alarm)
             slept == 0 && alarm != null -> context.getString(R.string.status_waiting_alarm, alarm)
             slept == 0 -> context.getString(R.string.status_waiting)
             alarm != null -> context.getString(
-                R.string.status_waiting_slept_alarm, minutes(context, slept), duration(context, state.target), alarm
+                R.string.status_awake_slept_alarm, minutes(context, slept), duration(context, state.target), alarm
             )
             else -> context.getString(
-                R.string.status_waiting_slept, minutes(context, slept), duration(context, state.target)
+                R.string.status_awake_slept, minutes(context, slept), duration(context, state.target)
             )
         }
     }

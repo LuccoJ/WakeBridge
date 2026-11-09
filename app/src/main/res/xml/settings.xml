@@ -6,22 +6,30 @@
         <Preference
             app:key="watch"
             app:title="@string/settings_watch_title" />
-    </PreferenceCategory>
-
-    <PreferenceCategory app:title="@string/settings_tile_category">
-        <SwitchPreferenceCompat
-            app:key="tile_one_tap"
-            app:title="@string/settings_tile_one_tap_title"
-            app:summary="@string/settings_tile_one_tap_summary"
-            app:defaultValue="false" />
+        <Preference
+            app:key="setup"
+            app:title="@string/setup_title" />
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/settings_alarms_category">
         <SwitchPreferenceCompat
-            app:key="early_alarm"
-            app:title="@string/settings_early_title"
-            app:summary="@string/settings_early_summary"
+            app:key="fail_safe"
+            app:title="@string/settings_fail_safe_title"
+            app:summary="@string/settings_fail_safe_summary"
             app:defaultValue="true" />
+        <SwitchPreferenceCompat
+            app:key="phone_backup"
+            app:title="@string/settings_backup_title"
+            app:summary="@string/settings_backup_summary"
+            app:defaultValue="true" />
+        <SeekBarPreference
+            app:key="backup_delay"
+            app:dependency="phone_backup"
+            app:title="@string/settings_backup_delay_title"
+            app:defaultValue="10"
+            app:min="0"
+            android:max="30"
+            app:showSeekBarValue="true" />
         <SeekBarPreference
             app:key="expiry_hours"
             app:title="@string/settings_expiry_title"
@@ -32,50 +40,20 @@
             app:showSeekBarValue="true" />
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/settings_auto_nap_category">
-        <SwitchPreferenceCompat
-            app:key="auto_nap_enabled"
-            app:title="@string/settings_auto_nap_title"
-            app:summary="@string/settings_auto_nap_summary"
-            app:defaultValue="false" />
-        <ListPreference
-            app:key="auto_nap_minutes"
-            app:dependency="auto_nap_enabled"
-            app:title="@string/settings_auto_nap_minutes_title"
-            app:entries="@array/nap_minutes_entries"
-            app:entryValues="@array/nap_minutes_values"
-            app:defaultValue="20"
-            app:useSimpleSummaryProvider="true" />
+    <PreferenceCategory app:title="@string/settings_tile_category">
+        <Preference
+            app:selectable="false"
+            app:title="@string/settings_tile_title"
+            app:summary="@string/settings_tile_summary" />
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/settings_night_category">
-        <SwitchPreferenceCompat
-            app:key="night_enabled"
-            app:title="@string/settings_night_title"
-            app:summary="@string/settings_night_summary"
-            app:defaultValue="false" />
-        <Preference
-            app:key="night_arm_time"
-            app:title="@string/settings_night_arm_title" />
+    <PreferenceCategory app:title="@string/settings_appearance_category">
         <ListPreference
-            app:key="night_minutes"
-            app:title="@string/settings_night_minutes_title"
-            app:entries="@array/night_minutes_entries"
-            app:entryValues="@array/night_minutes_values"
-            app:defaultValue="450"
+            app:key="timeline_side"
+            app:title="@string/settings_timeline_side_title"
+            app:entries="@array/timeline_side_entries"
+            app:entryValues="@array/timeline_side_values"
+            app:defaultValue="right"
             app:useSimpleSummaryProvider="true" />
-        <SwitchPreferenceCompat
-            app:key="night_sleep_only"
-            app:title="@string/sleep_only_title"
-            app:summary="@string/sleep_only_summary"
-            app:defaultValue="true" />
-        <Preference
-            app:key="night_latest_time"
-            app:title="@string/settings_night_latest_title" />
-        <SwitchPreferenceCompat
-            app:key="night_latest_enabled"
-            app:title="@string/settings_night_latest_enabled_title"
-            app:summary="@string/settings_night_latest_enabled_summary"
-            app:defaultValue="true" />
     </PreferenceCategory>
 </PreferenceScreen>

@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- The screens don't handle edge-to-edge insets yet -->
-    <style name="Theme.WakeBridge" parent="Theme.Material3.DayNight">
-        <item name="colorPrimary">@color/primary</item>
-        <item name="colorOnPrimary">@color/on_primary</item>
+    <!-- The screens don't handle edge-to-edge insets -->
+    <style name="Theme.WakeBridge" parent="Theme.WakeBridge.Base">
+        <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
+    </style>
+
+    <style name="Theme.WakeBridge.Setup" parent="Theme.WakeBridge.WithActionBar">
         <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
     </style>
 </resources>
