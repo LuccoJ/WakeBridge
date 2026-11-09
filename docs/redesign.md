@@ -187,3 +187,15 @@ fix-third-party-alarms: SET_ALARM prefers unused slots, DISMISS_ALARM marks them
 - Italian: "Includi i pisolini di oggi".
 - Timeline suns: sized as in the mockup (CSS radial-gradient(circle) reaches the square's corner,
   so the glow is ~30 dp across), sticking out of the track level with the status card.
+
+## Round 5: the timeline explains itself (mockup: TimelineLegend, TimelineShift)
+- Testers found the timeline non-obvious. On first visit, and whenever the timeline is touched
+  or dragged, a legend appears: labelled arrows for now, the nap, night start, the night's
+  sleep and night end (durations as brackets to scale). Both sleeps show in both tabs while
+  the legend is up; outside it each tab shows only its own.
+- The pane fades with a gradient from the timeline's side, so the far side stays visible.
+- No "now" line on the timeline outside the legend.
+- Night start/end can be dragged by the handle or by their label and arrow; while dragging the
+  label shows the live time and the other labels dim. This replaces the drag tooltip.
+- Shift work: no panning and no "now at the top". The axis is noon to noon, or midnight to
+  midnight when the night crosses noon (chosen automatically; crossing noon via the time picker).
