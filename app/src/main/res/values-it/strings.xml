@@ -4,7 +4,6 @@
     <string name="format_minutes">%d min</string>
     <string name="format_hours">%d h</string>
     <string name="format_hours_minutes">%1$d h %2$d min</string>
-    <string name="window">dalle %1$s alle %2$s</string>
     <string name="from_time">Dalle %s</string>
 
     <!-- Tabs -->
@@ -21,11 +20,10 @@
     <string name="not_connected">non connesso</string>
 
     <!-- Status, shared by the panes and the tile. Gendered words: see values-it-feminine/masculine -->
-    <string name="status_label">Stato</string>
     <string name="status_idle">Nessuna sveglia impostata</string>
     <string name="status_no_nap">Nessuna sveglia per il pisolino</string>
     <string name="status_no_night">Nessuna sveglia notturna</string>
-    <string name="status_every_night">Ogni notte dalle %s</string>
+    <string name="status_every_night">Attiva ogni notte</string>
     <string name="status_armed_tonight">Attiva per stanotte</string>
     <string name="status_night_active">La sveglia notturna è attiva</string>
     <string name="status_waiting">Ancora sveglio/a</string>
@@ -40,11 +38,7 @@
     <string name="mode_from_first_sleep">dal primo addormentamento</string>
     <string name="mode_countdown">conto alla rovescia semplice</string>
     <string name="mode_night_end">alla fine della notte</string>
-    <string name="details_slept">Dormito finora: %1$s su %2$s</string>
-    <string name="details_phone_only">L\'orologio non era connesso: suonerà il telefono</string>
     <string name="last_sleep">Ultimo sonno rilevato: %s</string>
-    <string name="every_nap_details">I pisolini partono da soli tra le %1$s e le %2$s</string>
-    <string name="setup_needed">Per funzionare, WakeBridge ha bisogno di alcune impostazioni in Gadgetbridge.</string>
     <string name="disconnected_hint">L\'orologio non è connesso: per contare il sonno serve. Riconnettilo in Gadgetbridge, o scegli il conto alla rovescia semplice, che suona sul telefono.</string>
 
     <!-- Panes -->
@@ -148,7 +142,7 @@
     <string name="setup_copied">Copiato</string>
     <string name="setup_step1_more">Poi fai lo stesso in Quando ci si sveglia.\n\nSe il tuo orologio non ha Azioni sul dispositivo, o non ha Quando ci si addormenta, non segnala quando ti addormenti: funziona solo il conto alla rovescia semplice.</string>
     <string name="setup_step2_title">2. Sveglie</string>
-    <string name="setup_step2_body">Nelle impostazioni dell\'orologio, apri Impostazioni sviluppatore e, sotto API Intenti, attiva Allow 3rd party apps to set alarms (non ancora tradotto in Gadgetbridge).\n\nWakeBridge usa uno spazio sveglia disattivato e senza nome. Tieni almeno una sveglia così nell\'elenco delle sveglie di Gadgetbridge. Le sveglie di WakeBridge si chiamano WakeBridge, ed è l\'unico tipo di sveglia che tocca.\n\nProblema noto di Gadgetbridge con gli orologi Amazfit e Mi Band: può mettere la sveglia in uno spazio che considera inutilizzato, e mandarla all\'orologio disattivata. Se la sveglia di prova qui sotto non suona, apri l\'elenco delle sveglie di Gadgetbridge, mostra le sveglie inutilizzate, e accendi e spegni ogni sveglia sbiadita.</string>
+    <string name="setup_step2_body">Nelle impostazioni dell\'orologio, apri Impostazioni sviluppatore e, sotto API Intenti, attiva Allow 3rd party apps to set alarms (non ancora tradotto in Gadgetbridge).\n\nGadgetbridge mette la sveglia di WakeBridge nella prima sveglia spenta e senza nome, quindi tienine almeno una così nel suo elenco delle sveglie. Per proteggere le tue sveglie spente, dai loro un nome: Gadgetbridge non le toccherà. Le sveglie di WakeBridge si chiamano WakeBridge, ed è l\'unico tipo di sveglia che rimuove.\n\nProblema noto di Gadgetbridge con gli orologi Amazfit e Mi Band: può mettere la sveglia in uno spazio che considera inutilizzato, e mandarla all\'orologio disattivata. Se la sveglia di prova qui sotto non suona, apri l\'elenco delle sveglie di Gadgetbridge, mostra le sveglie inutilizzate, e accendi e spegni ogni sveglia sbiadita.</string>
     <string name="setup_step3_title">3. Orologio</string>
     <string name="setup_choose_watch">Scegli l\'orologio</string>
     <string name="setup_watch_chosen">Le sveglie vanno a: %s</string>
@@ -173,4 +167,29 @@
     <string name="setup_log_title">Eventi recenti</string>
     <string name="setup_log_empty">Ancora niente</string>
     <string name="setup_clear_log">Cancella</string>
+
+    <!-- Scheda di stato (layout A) -->
+    <string name="title_asleep">Sonno in corso</string>
+    <string name="title_awake">Sveglio/a</string>
+    <string name="title_countdown">Conto alla rovescia</string>
+    <string name="title_night_on">Sveglia notturna attiva</string>
+    <string name="title_watching_naps">In attesa di un pisolino</string>
+    <string name="title_setup">Da configurare</string>
+    <string name="detail_nap_alarm">Suona alle %1$s, pisolino di %2$s</string>
+    <string name="detail_night_alarm">Suona alle %1$s, sonno di %2$s</string>
+    <string name="detail_slept_alarm">Suona alle %1$s, dormito %2$s su %3$s</string>
+    <string name="detail_nap_no_alarm">Pisolino di %s, suona dopo che ti addormenti</string>
+    <string name="detail_slept">Dormito %1$s su %2$s</string>
+    <string name="detail_phone">Suona il telefono alle %s: orologio non connesso</string>
+    <string name="detail_night_window">Notte dalle %1$s alle %2$s, %3$s</string>
+    <string name="detail_nap_hours">Pisolini dalle %1$s alle %2$s</string>
+    <string name="detail_naps_after_night">I pisolini riprendono alle %s</string>
+    <string name="detail_setup">Vedi Impostazioni, Configurazione e informazioni</string>
+    <string name="detail_disconnected">Orologio non connesso: funziona solo il conto alla rovescia</string>
+    <string name="caption_next_nap">Un pisolino: avvialo con il pulsante qui sotto</string>
+    <string name="caption_every_nap">Se ti addormenti di giorno, il pisolino parte da solo</string>
+    <string name="caption_tonight">Solo stanotte: attivala con il pulsante qui sotto</string>
+    <string name="caption_every_night">Si attiva da sola all\'inizio della notte, ogni notte</string>
+    <string name="napped_today">Pisolini di oggi</string>
+    <string name="toast_night_running">La sveglia notturna è attiva: fermala prima in Sonno notturno</string>
 </resources>

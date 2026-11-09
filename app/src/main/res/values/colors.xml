@@ -16,6 +16,9 @@
     <!-- Day on the timeline: pale sky -->
     <color name="day_focus">#BFE9F3</color>
     <color name="day_soft">#EAF6F9</color>
+    <!-- Timeline landmarks: a warm sun behind the noons, a pale crescent behind midnight -->
+    <color name="sun_glow">#EEBE69</color>
+    <color name="moon">#A9BFE6</color>
 
     <color name="surface">#F8FBFC</color>
     <color name="card">#E8F1F4</color>

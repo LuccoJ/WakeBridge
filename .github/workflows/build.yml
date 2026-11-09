@@ -1,0 +1,84 @@
+# Builds WakeBridge with an Android SDK assembled from openly licensed parts
+# (LuccoJ/android-development), so no one accepts Google's Android SDK License Agreement.
+# The runner's preinstalled Google SDK is deleted first, to be sure it isn't used.
+name: Build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    env:
+      MAVEN_MIRROR: https://maven-central.storage-download.googleapis.com/maven2
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check out the open SDK recipe
+        uses: actions/checkout@v4
+        with:
+          repository: LuccoJ/android-development
+          ref: fe3bba1c2980d3b899676af97552cb1f2a86470e
+          path: .open-sdk-recipe
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Remove the preinstalled Google SDK
+        run: |
+          sudo rm -rf /usr/local/lib/android
+          echo "ANDROID_HOME=$HOME/oss-android-sdk" >> "$GITHUB_ENV"
+          echo "ANDROID_SDK_ROOT=$HOME/oss-android-sdk" >> "$GITHUB_ENV"
+
+      - name: Install Debian/Ubuntu build tools
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq aidl android-sdk-build-tools
+
+      - name: Cache SDK downloads and Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/oss-android-sdk/.cache
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: open-sdk-${{ runner.os }}-${{ hashFiles('**/*.gradle.kts', 'gradle/**', '.open-sdk-recipe/setup-sdk.sh') }}
+          restore-keys: open-sdk-${{ runner.os }}-
+
+      - name: Assemble the open SDK
+        run: .open-sdk-recipe/setup-sdk.sh --sdk "$ANDROID_HOME" --api 37 --build-tools 36.0.0
+
+      # Optional: sign with a fixed debug key so builds install over each other.
+      # Store it base64-encoded as the repository secret DEBUG_KEYSTORE.
+      - name: Debug signing key
+        env:
+          DEBUG_KEYSTORE: ${{ secrets.DEBUG_KEYSTORE }}
+        if: env.DEBUG_KEYSTORE != ''
+        run: |
+          mkdir -p ~/.android
+          echo "$DEBUG_KEYSTORE" | base64 -d > ~/.android/debug.keystore
+
+      - name: Build, test and lint
+        run: ./gradlew --no-daemon assembleDebug testDebugUnitTest lintDebug -ProbolectricRepoUrl="$MAVEN_MIRROR"
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: WakeBridge-debug-apk
+          path: app/build/outputs/apk/debug/*.apk
+
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports
+          path: |
+            app/build/reports/
+            app/build/test-results/

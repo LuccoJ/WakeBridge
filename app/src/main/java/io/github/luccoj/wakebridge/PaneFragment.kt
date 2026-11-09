@@ -1,7 +1,11 @@
 package io.github.luccoj.wakebridge
 
 import android.app.TimePickerDialog
+import android.bluetooth.BluetoothDevice
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.os.Handler
@@ -16,6 +20,7 @@ import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.button.MaterialButtonToggleGroup
 import com.google.android.material.card.MaterialCardView
@@ -39,6 +44,15 @@ class PaneFragment : Fragment() {
         }
     }
     private val listener = { activity?.runOnUiThread { refresh() }; Unit }
+
+    /** The connection chip follows the watch connecting and disconnecting. */
+    private val bluetooth = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            refresh()
+            // The connected-devices list can lag the broadcast a little
+            handler.postDelayed({ refresh() }, 1500)
+        }
+    }
     private var binding = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
@@ -118,6 +132,14 @@ class PaneFragment : Fragment() {
         arrangeTimeline()
         Session.addListener(listener)
         handler.post(ticker)
+        ContextCompat.registerReceiver(
+            requireContext(), bluetooth,
+            IntentFilter().apply {
+                addAction(BluetoothDevice.ACTION_ACL_CONNECTED)
+                addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED)
+            },
+            ContextCompat.RECEIVER_NOT_EXPORTED
+        )
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -130,7 +152,8 @@ class PaneFragment : Fragment() {
 
     override fun onPause() {
         Session.removeListener(listener)
-        handler.removeCallbacks(ticker)
+        handler.removeCallbacksAndMessages(null)
+        requireContext().unregisterReceiver(bluetooth)
         super.onPause()
     }
 
@@ -195,6 +218,8 @@ class PaneFragment : Fragment() {
         } else {
             if (state?.kind == Session.Kind.NAP) {
                 Session.cancel(context, getString(R.string.log_cancelled))
+            } else if (state?.kind == Session.Kind.NIGHT) {
+                Toast.makeText(context, R.string.toast_night_running, Toast.LENGTH_LONG).show()
             } else {
                 val result = Session.start(
                     context, Session.Kind.NAP, Duration.ofMinutes(settings.napMinutes.toLong()), settings.dayWakeMode
@@ -219,24 +244,29 @@ class PaneFragment : Fragment() {
         binding = true
 
         // Connection chip
+        // Connection chip: Bluetooth icon and the watch's name; "connected" only for screen readers
         root.findViewById<TextView>(R.id.connection).apply {
             val name = settings.watchName ?: getString(R.string.watch)
             when {
                 settings.watchAddress == null -> {
                     text = getString(R.string.chip_no_watch)
-                    chip(R.color.chip_neutral_bg, R.color.chip_neutral_fg)
+                    contentDescription = text
+                    chip(R.drawable.ic_bluetooth_off, R.color.chip_neutral_bg, R.color.chip_neutral_fg)
                 }
                 connection == WatchConnection.State.CONNECTED -> {
-                    text = getString(R.string.chip_connected, name)
-                    chip(R.color.chip_ok_bg, R.color.chip_ok_fg)
+                    text = name
+                    contentDescription = getString(R.string.chip_connected, name)
+                    chip(R.drawable.ic_bluetooth, R.color.chip_ok_bg, R.color.chip_ok_fg)
                 }
                 connection == WatchConnection.State.DISCONNECTED -> {
-                    text = getString(R.string.chip_disconnected, name)
-                    chip(R.color.chip_error_bg, R.color.chip_error_fg)
+                    text = name
+                    contentDescription = getString(R.string.chip_disconnected, name)
+                    chip(R.drawable.ic_bluetooth_off, R.color.chip_error_bg, R.color.chip_error_fg)
                 }
                 else -> {
                     text = name
-                    chip(R.color.chip_neutral_bg, R.color.chip_neutral_fg)
+                    contentDescription = name
+                    chip(R.drawable.ic_bluetooth, R.color.chip_neutral_bg, R.color.chip_neutral_fg)
                 }
             }
         }
@@ -248,21 +278,26 @@ class PaneFragment : Fragment() {
         card.setCardBackgroundColor(context.getColor(if (dark) R.color.night else R.color.card))
         val fg = context.getColor(if (dark) R.color.on_night else R.color.on_surface)
         val fgSoft = context.getColor(if (dark) R.color.on_night_soft else R.color.on_surface_soft)
-        root.findViewById<TextView>(R.id.status_label).setTextColor(fgSoft)
         root.findViewById<TextView>(R.id.status).setTextColor(fg)
         root.findViewById<TextView>(R.id.status_details).setTextColor(fgSoft)
         val (title, details) = statusTexts(state, mine, connection, now)
         root.findViewById<TextView>(R.id.status).text = title
-        root.findViewById<TextView>(R.id.status_details).apply {
-            text = details
-            visibility = if (details.isEmpty()) View.GONE else View.VISIBLE
-        }
+        // Always two lines, so nothing below moves
+        root.findViewById<TextView>(R.id.status_details).text = details.ifEmpty { " " }
 
         // Once / every
         root.findViewById<TextView>(R.id.once).setText(if (night) R.string.tonight else R.string.next_nap)
         root.findViewById<TextView>(R.id.every).setText(if (night) R.string.every_night else R.string.every_nap)
-        root.findViewById<MaterialButtonToggleGroup>(R.id.every_toggle)
-            .check(if (if (night) settings.nightEvery else settings.dayEvery) R.id.every else R.id.once)
+        val every = if (night) settings.nightEvery else settings.dayEvery
+        root.findViewById<MaterialButtonToggleGroup>(R.id.every_toggle).check(if (every) R.id.every else R.id.once)
+        root.findViewById<TextView>(R.id.mode_caption).setText(
+            when {
+                night && every -> R.string.caption_every_night
+                night -> R.string.caption_tonight
+                every -> R.string.caption_every_nap
+                else -> R.string.caption_next_nap
+            }
+        )
 
         // Sleep amount
         val minutes = if (night) settings.nightMinutes else settings.napMinutes
@@ -296,9 +331,15 @@ class PaneFragment : Fragment() {
                 WakeMode.FIXED -> R.id.mode_fixed
             }
         )
+        // Extra row, the same height in both panes
+        root.findViewById<TextView>(R.id.extra_label).setText(if (night) R.string.include_naps else R.string.napped_today)
         root.findViewById<MaterialSwitch>(R.id.include_naps).apply {
             visibility = if (night) View.VISIBLE else View.GONE
             isChecked = settings.nightIncludeNaps
+        }
+        root.findViewById<TextView>(R.id.extra_value).apply {
+            visibility = if (night) View.GONE else View.VISIBLE
+            text = Format.duration(context, NapLedger.today(context))
         }
 
         // Round button
@@ -338,48 +379,72 @@ class PaneFragment : Fragment() {
         binding = false
     }
 
-    private fun TextView.chip(bg: Int, fg: Int) {
+    private fun TextView.chip(icon: Int, bg: Int, fg: Int) {
         backgroundTintList = ColorStateList.valueOf(context.getColor(bg))
         setTextColor(context.getColor(fg))
+        val drawable = ContextCompat.getDrawable(context, icon)?.mutate()
+        val size = (textSize * 1.2f).toInt()
+        drawable?.setBounds(0, 0, size, size)
+        setCompoundDrawablesRelative(drawable, null, null, null)
+        TextViewCompat.setCompoundDrawableTintList(this, ColorStateList.valueOf(context.getColor(fg)))
     }
 
+    /** The status card: a short state, then the numbers with the alarm time first. */
     private fun statusTexts(
         state: Session.State?, mine: Boolean, connection: WatchConnection.State, now: java.time.Instant,
     ): Pair<String, String> {
         val context = requireContext()
-        if (mine && state != null) {
-            val lines = mutableListOf(Session.describe(context, state))
-            if (state.counting) {
-                lines += getString(
-                    R.string.details_slept,
-                    Format.minutes(context, state.sleptAt(now).toMinutes().toInt()),
-                    Format.duration(context, state.target)
-                )
-            }
-            if (state.phoneOnly) lines += getString(R.string.details_phone_only)
-            return Format.status(context, state, now) to lines.joinToString("\n")
-        }
+        if (mine && state != null) return sessionTexts(state, now)
+        val window = getString(
+            R.string.detail_night_window, Format.time(context, settings.nightStart),
+            Format.time(context, settings.nightEnd), Format.duration(context, settings.nightWindow)
+        )
         if (night) {
-            val window = getString(
-                R.string.window, Format.time(context, settings.nightStart), Format.time(context, settings.nightEnd)
-            )
             return when {
-                settings.nightEvery -> getString(R.string.status_every_night, Format.time(context, settings.nightStart)) to window
+                settings.nightEvery -> getString(R.string.status_every_night) to window
                 settings.nightTonight -> getString(R.string.status_armed_tonight) to window
                 else -> getString(R.string.status_no_night) to window
             }
         }
-        if (state?.kind == Session.Kind.NIGHT) return getString(R.string.status_night_active) to ""
-        val details = when {
-            settings.watchAddress == null -> getString(R.string.setup_needed)
-            connection == WatchConnection.State.DISCONNECTED && settings.dayWakeMode != WakeMode.FIXED ->
-                getString(R.string.disconnected_hint)
-            settings.dayEvery -> getString(
-                R.string.every_nap_details, Format.time(context, settings.nightEnd), Format.time(context, settings.nightStart)
-            )
-            else -> Session.lastFellAsleep(context)?.let { getString(R.string.last_sleep, Format.dateTime(context, it)) } ?: ""
+        if (state?.kind == Session.Kind.NIGHT) {
+            return getString(R.string.status_night_active) to
+                getString(R.string.detail_naps_after_night, Format.time(context, settings.nightEnd))
         }
-        return getString(R.string.status_no_nap) to details
+        return when {
+            settings.watchAddress == null -> getString(R.string.title_setup) to getString(R.string.detail_setup)
+            connection == WatchConnection.State.DISCONNECTED && settings.dayWakeMode != WakeMode.FIXED ->
+                getString(R.string.status_no_nap) to getString(R.string.detail_disconnected)
+            settings.dayEvery -> getString(R.string.title_watching_naps) to getString(
+                R.string.detail_nap_hours, Format.time(context, settings.nightEnd), Format.time(context, settings.nightStart)
+            )
+            else -> getString(R.string.status_no_nap) to
+                (Session.lastFellAsleep(context)?.let { getString(R.string.last_sleep, Format.dateTime(context, it)) } ?: "")
+        }
+    }
+
+    private fun sessionTexts(state: Session.State, now: java.time.Instant): Pair<String, String> {
+        val context = requireContext()
+        val alarm = state.wakeAt?.let { Format.time(context, it) }
+        val target = Format.duration(context, state.target)
+        val slept = state.sleptAt(now).toMinutes().toInt()
+        val title = getString(
+            when {
+                state.mode == WakeMode.FIXED -> if (state.kind == Session.Kind.NAP) R.string.title_countdown else R.string.title_night_on
+                state.asleep -> R.string.title_asleep
+                state.firstSleepAt == null && slept == 0 -> R.string.status_waiting
+                else -> R.string.title_awake
+            }
+        )
+        val details = when {
+            state.phoneOnly && alarm != null -> getString(R.string.detail_phone, alarm)
+            alarm == null && slept == 0 -> getString(R.string.detail_nap_no_alarm, target)
+            alarm == null -> getString(R.string.detail_slept, Format.minutes(context, slept), target)
+            state.counting && slept > 0 ->
+                getString(R.string.detail_slept_alarm, alarm, Format.minutes(context, slept), target)
+            state.kind == Session.Kind.NAP -> getString(R.string.detail_nap_alarm, alarm, target)
+            else -> getString(R.string.detail_night_alarm, alarm, target)
+        }
+        return title to details
     }
 
     companion object {

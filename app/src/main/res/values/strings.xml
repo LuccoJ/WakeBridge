@@ -6,7 +6,6 @@
     <string name="format_minutes">%d min</string>
     <string name="format_hours">%d h</string>
     <string name="format_hours_minutes">%1$d h %2$d min</string>
-    <string name="window">%1$s to %2$s</string>
     <string name="from_time">From %s</string>
 
     <!-- Tabs -->
@@ -23,11 +22,10 @@
     <string name="not_connected">not connected</string>
 
     <!-- Status, shared by the panes and the tile -->
-    <string name="status_label">Status</string>
     <string name="status_idle">No alarm set</string>
     <string name="status_no_nap">No nap alarm</string>
     <string name="status_no_night">No night alarm</string>
-    <string name="status_every_night">Every night from %s</string>
+    <string name="status_every_night">Armed every night</string>
     <string name="status_armed_tonight">Armed for tonight</string>
     <string name="status_night_active">The night alarm is on</string>
     <string name="status_waiting">Not asleep yet</string>
@@ -42,11 +40,7 @@
     <string name="mode_from_first_sleep">from first falling asleep</string>
     <string name="mode_countdown">plain countdown</string>
     <string name="mode_night_end">at the night\'s end</string>
-    <string name="details_slept">Slept so far: %1$s of %2$s</string>
-    <string name="details_phone_only">The watch was away: the phone will ring</string>
     <string name="last_sleep">Last sleep detected: %s</string>
-    <string name="every_nap_details">Naps start by themselves between %1$s and %2$s</string>
-    <string name="setup_needed">WakeBridge needs a few settings in Gadgetbridge before it can work.</string>
     <string name="disconnected_hint">The watch isn\'t connected: counting sleep needs it. Reconnect it in Gadgetbridge, or choose the plain countdown, which rings on the phone.</string>
 
     <!-- Panes -->
@@ -154,7 +148,7 @@
     <string name="setup_copied">Copied</string>
     <string name="setup_step1_more">Then do the same under On Wake Up.\n\nIf your watch has no Device actions, or no On Fall Asleep, it doesn\'t report falling asleep: only the plain countdown works.</string>
     <string name="setup_step2_title">2. Alarms</string>
-    <string name="setup_step2_body">In the watch\'s settings, open Developer settings and, under Intent API, turn on Allow 3rd party apps to set alarms.\n\nWakeBridge uses an alarm slot that is off and has no name. Keep at least one such alarm in Gadgetbridge\'s alarm list. WakeBridge\'s alarms are named WakeBridge, and it only ever touches those.\n\nKnown Gadgetbridge issue with Amazfit and Mi Band watches: it may put the alarm in a slot it considers unused, and then send it to the watch switched off. If the test alarm below doesn\'t ring, open Gadgetbridge\'s alarm list, show unused alarms, and switch each dimmed alarm on and off again.</string>
+    <string name="setup_step2_body">In the watch\'s settings, open Developer settings and, under Intent API, turn on Allow 3rd party apps to set alarms.\n\nGadgetbridge puts WakeBridge\'s alarm in the first alarm that is off and has no name, so keep at least one such alarm in its alarm list. To protect your own switched-off alarms, give them a name: Gadgetbridge then leaves them alone. WakeBridge\'s alarms are named WakeBridge, and it only ever removes those.\n\nKnown Gadgetbridge issue with Amazfit and Mi Band watches: it may put the alarm in a slot it considers unused, and then send it to the watch switched off. If the test alarm below doesn\'t ring, open Gadgetbridge\'s alarm list, show unused alarms, and switch each dimmed alarm on and off again.</string>
     <string name="setup_step3_title">3. Watch</string>
     <string name="setup_choose_watch">Choose watch</string>
     <string name="setup_watch_chosen">Alarms go to: %s</string>
@@ -179,4 +173,29 @@
     <string name="setup_log_title">Recent events</string>
     <string name="setup_log_empty">Nothing yet</string>
     <string name="setup_clear_log">Clear</string>
+
+    <!-- Status card (layout A): a short state, then the numbers, alarm time first -->
+    <string name="title_asleep">Asleep</string>
+    <string name="title_awake">Awake</string>
+    <string name="title_countdown">Countdown running</string>
+    <string name="title_night_on">Night alarm on</string>
+    <string name="title_watching_naps">Watching for naps</string>
+    <string name="title_setup">Not set up yet</string>
+    <string name="detail_nap_alarm">Alarm %1$s, nap of %2$s</string>
+    <string name="detail_night_alarm">Alarm %1$s, sleep of %2$s</string>
+    <string name="detail_slept_alarm">Alarm %1$s, slept %2$s of %3$s</string>
+    <string name="detail_nap_no_alarm">Nap of %s, alarm once asleep</string>
+    <string name="detail_slept">Slept %1$s of %2$s</string>
+    <string name="detail_phone">The phone rings at %s: watch not connected</string>
+    <string name="detail_night_window">Night %1$s to %2$s, %3$s</string>
+    <string name="detail_nap_hours">Naps from %1$s to %2$s</string>
+    <string name="detail_naps_after_night">Naps start again at %s</string>
+    <string name="detail_setup">See Settings, Setup and info</string>
+    <string name="detail_disconnected">Watch not connected: only the countdown works</string>
+    <string name="caption_next_nap">One nap: start it with the button below</string>
+    <string name="caption_every_nap">Falling asleep in the day starts a nap by itself</string>
+    <string name="caption_tonight">Tonight only: arm it with the button below</string>
+    <string name="caption_every_night">Arms itself at the night\'s start, every night</string>
+    <string name="napped_today">Napped today</string>
+    <string name="toast_night_running">The night alarm is on: stop it in Night sleep first</string>
 </resources>

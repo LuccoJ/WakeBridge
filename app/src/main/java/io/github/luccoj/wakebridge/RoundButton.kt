@@ -30,7 +30,7 @@ class RoundButton @JvmOverloads constructor(
     var look: Look = Look.IDLE
         set(value) {
             field = value
-            isEnabled = value != Look.DISABLED
+            // Stays clickable when greyed out, so a tap can explain why it can't start
             updateAnimation()
             invalidate()
         }

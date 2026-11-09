@@ -45,7 +45,8 @@ The design is recorded in [docs/redesign.md](docs/redesign.md).
 
 - The alarm rings on the watch, so it goes off even if the phone kills WakeBridge.
 - Gadgetbridge puts WakeBridge's alarms in a free slot (one that's off and has no name), titled
-  "WakeBridge". WakeBridge only ever dismisses alarms with that title.
+  "WakeBridge". WakeBridge only ever dismisses alarms with that title, but it can't choose the
+  slot: give your own switched-off alarms a name so Gadgetbridge leaves them alone.
 - Watch alarms have minute resolution, so wake-up times are rounded up to the next minute.
 - A finished alarm is removed from the watch 10 minutes after its time, so snoozing still works.
 - Gadgetbridge has no command to move an alarm, so a move is a dismissal followed by a new alarm.
@@ -65,6 +66,9 @@ setup-sdk.sh --api 37 --build-tools 36.0.0
 ```bash
 ANDROID_HOME=~/oss-android-sdk ./gradlew assembleDebug testDebugUnitTest
 ```
+
+GitHub Actions builds the same way (`.github/workflows/build.yml`): it deletes the runner's
+preinstalled Google SDK, assembles the open one and uploads the debug APK as a build artifact.
 
 The unit tests use Robolectric, which downloads Android framework jars from Maven Central. If
 Central rate-limits you, set `robolectricRepoUrl` in `~/.gradle/gradle.properties` to a mirror,

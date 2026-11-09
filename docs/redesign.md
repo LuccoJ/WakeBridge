@@ -160,6 +160,8 @@ as a Settings choice, mindful of option creep):
   softens the timeline's top edge against the status card.
 
 ## Round 3: feedback on 0.3.1 (layout A chosen for the app)
+Status: done in 0.4.0. The slot problem is also fixed on the Gadgetbridge fork's branch
+fix-third-party-alarms: SET_ALARM prefers unused slots, DISMISS_ALARM marks them unused again.
 - Build layout A (status card two fixed lines, mode caption, same rows in both tabs, round
   button centred in the space left, no scrolling); chip = Bluetooth icon + name.
 - Per-app language: switchable in Android's "App languages" (Android 13+).

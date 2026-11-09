@@ -5,25 +5,30 @@
     <PreferenceCategory app:title="@string/settings_watch_category">
         <Preference
             app:key="watch"
+            app:icon="@drawable/ic_pref_watch"
             app:title="@string/settings_watch_title" />
         <Preference
             app:key="setup"
+            app:icon="@drawable/ic_pref_info"
             app:title="@string/setup_title" />
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/settings_alarms_category">
         <SwitchPreferenceCompat
             app:key="fail_safe"
+            app:icon="@drawable/ic_pref_shield"
             app:title="@string/settings_fail_safe_title"
             app:summary="@string/settings_fail_safe_summary"
             app:defaultValue="true" />
         <SwitchPreferenceCompat
             app:key="phone_backup"
+            app:icon="@drawable/ic_pref_phone"
             app:title="@string/settings_backup_title"
             app:summary="@string/settings_backup_summary"
             app:defaultValue="true" />
         <SeekBarPreference
             app:key="backup_delay"
+            app:icon="@drawable/ic_pref_timer"
             app:dependency="phone_backup"
             app:title="@string/settings_backup_delay_title"
             app:defaultValue="10"
@@ -32,6 +37,7 @@
             app:showSeekBarValue="true" />
         <SeekBarPreference
             app:key="expiry_hours"
+            app:icon="@drawable/ic_pref_hourglass"
             app:title="@string/settings_expiry_title"
             app:summary="@string/settings_expiry_summary"
             app:defaultValue="12"
@@ -43,6 +49,7 @@
     <PreferenceCategory app:title="@string/settings_tile_category">
         <Preference
             app:selectable="false"
+            app:icon="@drawable/ic_pref_tile"
             app:title="@string/settings_tile_title"
             app:summary="@string/settings_tile_summary" />
     </PreferenceCategory>
@@ -50,6 +57,7 @@
     <PreferenceCategory app:title="@string/settings_appearance_category">
         <ListPreference
             app:key="timeline_side"
+            app:icon="@drawable/ic_pref_side"
             app:title="@string/settings_timeline_side_title"
             app:entries="@array/timeline_side_entries"
             app:entryValues="@array/timeline_side_values"

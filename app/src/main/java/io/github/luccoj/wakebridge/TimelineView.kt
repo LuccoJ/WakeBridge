@@ -5,6 +5,8 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.LinearGradient
 import android.graphics.Paint
+import android.graphics.Path
+import android.graphics.RadialGradient
 import android.graphics.RectF
 import android.graphics.Shader
 import android.util.AttributeSet
@@ -18,6 +20,7 @@ import android.view.ViewConfiguration
 import android.view.ViewGroup
 import android.widget.PopupWindow
 import android.widget.TextView
+import androidx.core.graphics.ColorUtils
 import java.time.LocalTime
 import kotlin.math.abs
 import kotlin.math.roundToInt
@@ -70,6 +73,10 @@ class TimelineView @JvmOverloads constructor(
     private fun sp(v: Float) = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, v, resources.displayMetrics)
 
     private val accent = context.getColor(R.color.accent_deep)
+    private val sunColor = context.getColor(R.color.sun_glow)
+    private val moonColor = context.getColor(R.color.moon)
+    private val moon = Path()
+    private val moonCut = Path()
     private val track = RectF()
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val text = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -183,17 +190,43 @@ class TimelineView @JvmOverloads constructor(
         // Hour numbers every 3 hours inside the track, readable on whatever is under them; on a
         // 12-hour clock AM/PM goes on a second, smaller line to keep the track narrow
         val twelve = !DateFormat.is24HourFormat(context)
+        val lineHeight = text.descent() - text.ascent()
+        val block = if (twelve) lineHeight * 1.7f else lineHeight
+        fun labelCenter(i: Int) = when (i) {
+            0 -> track.top + dp(3f) + block / 2
+            8 -> track.bottom - dp(3f) - block / 2
+            else -> y(i / 8f * 1440)
+        }
+
+        // Landmarks behind the numbers: a soft sun behind both noons, a crescent behind midnight
+        for (i in listOf(0, 8)) {
+            val cy = labelCenter(i)
+            paint.shader = RadialGradient(
+                track.centerX(), cy, dp(15f),
+                intArrayOf(
+                    ColorUtils.setAlphaComponent(sunColor, 242), ColorUtils.setAlphaComponent(sunColor, 153),
+                    Color.TRANSPARENT
+                ),
+                floatArrayOf(0f, 0.42f, 0.72f), Shader.TileMode.CLAMP
+            )
+            canvas.drawCircle(track.centerX(), cy, dp(15f), paint)
+            paint.shader = null
+        }
+        moon.reset()
+        val moonY = labelCenter(4)
+        val moonR = dp(9.3f)
+        moon.addCircle(track.centerX(), moonY, moonR, Path.Direction.CW)
+        moonCut.reset()
+        moonCut.addCircle(track.centerX() + moonR * 0.53f, moonY - moonR * 0.53f, moonR, Path.Direction.CW)
+        moon.op(moonCut, Path.Op.DIFFERENCE)
+        paint.color = ColorUtils.setAlphaComponent(moonColor, 204)
+        canvas.drawPath(moon, paint)
+
         for (i in 0..8) {
             val fraction = i / 8f
             val hour = (12 + i * 3) % 24
             val number = if (twelve) (if (hour % 12 == 0) 12 else hour % 12).toString() else "%02d".format(hour)
-            val lineHeight = text.descent() - text.ascent()
-            val block = if (twelve) lineHeight * 1.7f else lineHeight
-            val center = when (i) {
-                0 -> track.top + dp(3f) + block / 2
-                8 -> track.bottom - dp(3f) - block / 2
-                else -> y(fraction * 1440)
-            }
+            val center = labelCenter(i)
             val inNight = fraction > s && fraction < e
             val onPreview = center in previewTop..previewBottom
             val dark = inNight && focusNight && !onPreview

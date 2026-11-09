@@ -6,4 +6,5 @@
     <string name="status_awake_slept">Sveglia, dormito %1$s su %2$s</string>
     <string name="status_awake_slept_alarm">Sveglia, dormito %1$s su %2$s, suona alle %3$s</string>
     <string name="wake_from_first">%s dopo essermi addormentata</string>
+    <string name="title_awake">Sveglia</string>
 </resources>
