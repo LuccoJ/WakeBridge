@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/setup_intro"
+            android:textAppearance="?attr/textAppearanceBodyLarge" />
+
+        <TextView
+            style="@style/SetupHeading"
+            android:text="@string/setup_step1_title" />
+
+        <TextView
+            style="@style/SetupBody"
+            android:text="@string/setup_step1_body" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/package_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="monospace"
+                android:textIsSelectable="true"
+                android:textAppearance="?attr/textAppearanceBodyMedium" />
+
+            <Button
+                android:id="@+id/copy_package"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/setup_copy" />
+        </LinearLayout>
+
+        <TextView
+            style="@style/SetupBody"
+            android:text="@string/setup_step1_more" />
+
+        <TextView
+            style="@style/SetupHeading"
+            android:text="@string/setup_step2_title" />
+
+        <TextView
+            style="@style/SetupBody"
+            android:text="@string/setup_step2_body" />
+
+        <TextView
+            style="@style/SetupHeading"
+            android:text="@string/setup_step3_title" />
+
+        <TextView
+            android:id="@+id/watch_status"
+            style="@style/SetupBody" />
+
+        <Button
+            android:id="@+id/choose_watch"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/setup_choose_watch" />
+
+        <TextView
+            style="@style/SetupHeading"
+            android:text="@string/setup_step4_title" />
+
+        <TextView
+            style="@style/SetupBody"
+            android:text="@string/setup_step4_body" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/test_alarm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@string/setup_test_alarm" />
+
+            <Button
+                android:id="@+id/remove_test_alarm"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/setup_remove_test_alarm" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/events_status"
+            style="@style/SetupBody" />
+
+        <TextView
+            style="@style/SetupHeading"
+            android:text="@string/setup_log_title" />
+
+        <TextView
+            android:id="@+id/event_log"
+            style="@style/SetupBody"
+            android:fontFamily="monospace"
+            android:textIsSelectable="true" />
+
+        <Button
+            android:id="@+id/clear_log"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/setup_clear_log" />
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/settings_watch_category">
+        <Preference
+            app:key="watch"
+            app:title="@string/settings_watch_title" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/settings_alarms_category">
+        <SeekBarPreference
+            app:key="expiry_hours"
+            app:title="@string/settings_expiry_title"
+            app:summary="@string/settings_expiry_summary"
+            app:defaultValue="12"
+            app:min="0"
+            android:max="48"
+            app:showSeekBarValue="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/settings_auto_nap_category">
+        <SwitchPreferenceCompat
+            app:key="auto_nap_enabled"
+            app:title="@string/settings_auto_nap_title"
+            app:summary="@string/settings_auto_nap_summary"
+            app:defaultValue="false" />
+        <ListPreference
+            app:key="auto_nap_minutes"
+            app:dependency="auto_nap_enabled"
+            app:title="@string/settings_auto_nap_minutes_title"
+            app:entries="@array/nap_minutes_entries"
+            app:entryValues="@array/nap_minutes_values"
+            app:defaultValue="20"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/settings_night_category">
+        <SwitchPreferenceCompat
+            app:key="night_enabled"
+            app:title="@string/settings_night_title"
+            app:summary="@string/settings_night_summary"
+            app:defaultValue="false" />
+        <Preference
+            app:key="night_arm_time"
+            app:title="@string/settings_night_arm_title" />
+        <ListPreference
+            app:key="night_minutes"
+            app:title="@string/settings_night_minutes_title"
+            app:entries="@array/night_minutes_entries"
+            app:entryValues="@array/night_minutes_values"
+            app:defaultValue="450"
+            app:useSimpleSummaryProvider="true" />
+        <SwitchPreferenceCompat
+            app:key="night_sleep_only"
+            app:title="@string/sleep_only_title"
+            app:summary="@string/sleep_only_summary"
+            app:defaultValue="true" />
+        <Preference
+            app:key="night_latest_time"
+            app:title="@string/settings_night_latest_title" />
+        <SwitchPreferenceCompat
+            app:key="night_latest_enabled"
+            app:title="@string/settings_night_latest_enabled_title"
+            app:summary="@string/settings_night_latest_enabled_summary"
+            app:defaultValue="true" />
+    </PreferenceCategory>
+</PreferenceScreen>
