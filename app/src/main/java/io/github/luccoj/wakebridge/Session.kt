@@ -168,7 +168,8 @@ object Session {
         undoPrefs(context).edit().clear().apply()
 
         val expiry = settings.expiryHours
-        val phoneOnly = WatchConnection.state(context) == WatchConnection.State.DISCONNECTED
+        val disconnected = WatchConnection.state(context) == WatchConnection.State.DISCONNECTED
+        val phoneOnly = settings.phoneOnly || disconnected
         var state = State(
             kind = kind,
             target = target,
@@ -191,7 +192,8 @@ object Session {
         }
         state = state.copy(wakeAt = wakeAt)
         EventLog.add(context, context.getString(R.string.log_started, describe(context, state)))
-        if (phoneOnly) EventLog.add(context, context.getString(R.string.log_phone_only))
+        if (settings.phoneOnly) EventLog.add(context, context.getString(R.string.log_phone_only_setting))
+        else if (disconnected) EventLog.add(context, context.getString(R.string.log_phone_only))
         if (wakeAt != null && !phoneOnly) Gadgetbridge.setAlarm(context, address, wakeAt)
         save(context, state)
         Scheduler.scheduleSession(context, state)

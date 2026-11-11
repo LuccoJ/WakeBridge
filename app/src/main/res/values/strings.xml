@@ -79,6 +79,8 @@
 
     <!-- Event log -->
     <string name="log_started">Started: %s</string>
+    <string name="log_phone_only_setting">Set to ring only on the phone</string>
+    <string name="log_simulated">Simulating a Gadgetbridge event from Setup and info</string>
     <string name="log_phone_only">The watch isn\'t connected: only the phone will ring</string>
     <string name="log_fell_asleep">Gadgetbridge: fell asleep</string>
     <string name="log_woke_up">Gadgetbridge: woke up</string>
@@ -115,6 +117,8 @@
     <string name="settings_alarms_category">Alarms</string>
     <string name="settings_fail_safe_title">Fail-safe alarm</string>
     <string name="settings_fail_safe_summary">Keep an alarm on the watch even before sleep is detected. Naps: after the nap\'s length. Nights: at the night\'s end.</string>
+    <string name="settings_phone_only_title">Ring only on the phone</string>
+    <string name="settings_phone_only_summary">Send no alarms to the watch: the phone rings instead. The watch still tells when you fall asleep and wake up. Applies from the next nap or night.</string>
     <string name="settings_backup_title">Phone backup alarm</string>
     <string name="settings_backup_summary">Ring the phone if the watch doesn\'t report you waking up a few minutes after its alarm</string>
     <string name="settings_backup_delay_title">Backup delay (minutes)</string>
@@ -149,7 +153,7 @@
     <string name="setup_watch_chosen">Alarms go to: %s</string>
     <string name="setup_watch_none">No watch chosen yet</string>
     <string name="setup_step4_title">4. Check</string>
-    <string name="setup_step4_body">Send a test alarm for about 2 minutes from now: it should appear in Gadgetbridge\'s alarm list and go off on the watch. If it doesn\'t, check step 2 and the watch address. Remove it afterwards to free the slot.\n\nThe next time you fall asleep with the watch on, the times below should change.</string>
+    <string name="setup_step4_body">Send a test alarm for about 2 minutes from now: it should appear in Gadgetbridge\'s alarm list and go off on the watch. If it doesn\'t, check step 2 and the watch address. Remove it afterwards to free the slot.\n\nThe next time you fall asleep with the watch on, the times below should change. To try WakeBridge without sleeping, simulate the two events with the buttons above.</string>
     <string name="setup_step5_title">5. Phone</string>
     <string name="setup_step5_body">For the phone backup alarm, and to see whether the watch is connected, the phone has to allow:</string>
     <string name="permission_notifications">Notifications</string>
@@ -162,6 +166,8 @@
     <string name="permission_optional">Not allowed (optional: makes timers more punctual)</string>
     <string name="permission_allow">Allow</string>
     <string name="setup_test_alarm">Test alarm</string>
+    <string name="setup_simulate_asleep">Simulate falling asleep</string>
+    <string name="setup_simulate_awake">Simulate waking up</string>
     <string name="setup_remove_test_alarm">Remove test alarm</string>
     <string name="setup_never">never</string>
     <string name="setup_events_status">Last fell asleep: %1$s\nLast woke up: %2$s</string>

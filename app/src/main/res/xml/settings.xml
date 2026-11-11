@@ -15,6 +15,13 @@
 
     <PreferenceCategory app:title="@string/settings_alarms_category">
         <SwitchPreferenceCompat
+            app:key="phone_only"
+            app:icon="@drawable/ic_pref_phone_only"
+            app:title="@string/settings_phone_only_title"
+            app:summary="@string/settings_phone_only_summary"
+            app:disableDependentsState="true"
+            app:defaultValue="false" />
+        <SwitchPreferenceCompat
             app:key="fail_safe"
             app:icon="@drawable/ic_pref_shield"
             app:title="@string/settings_fail_safe_title"
@@ -22,6 +29,7 @@
             app:defaultValue="true" />
         <SwitchPreferenceCompat
             app:key="phone_backup"
+            app:dependency="phone_only"
             app:icon="@drawable/ic_pref_phone"
             app:title="@string/settings_backup_title"
             app:summary="@string/settings_backup_summary"

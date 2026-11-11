@@ -118,17 +118,27 @@ class PaneFragment : Fragment() {
             override fun onWindowChanged(start: LocalTime, end: LocalTime, done: Boolean) {
                 settings.nightStart = start
                 settings.nightEnd = end
-                if (done) windowChanged()
+                if (done) {
+                    legendOpenedByTouch = false
+                    windowChanged()
+                }
                 refresh()
             }
 
-            override fun onThresholdTapped(start: Boolean) = pickThreshold(start)
+            // A tap that only opened the legend doesn't also open the time picker over it
+            override fun onThresholdTapped(start: Boolean) {
+                if (!legendOpenedByTouch) pickThreshold(start)
+                legendOpenedByTouch = false
+            }
 
             override fun onWindowLimit() {
                 Toast.makeText(requireContext(), R.string.toast_shorten_night, Toast.LENGTH_SHORT).show()
             }
 
-            override fun onTouched() = showLegend()
+            override fun onTouched() {
+                legendOpenedByTouch = root.findViewById<View>(R.id.legend).visibility != View.VISIBLE
+                showLegend()
+            }
         }
         val legend = view.findViewById<TimelineLegendView>(R.id.legend)
         legend.timeline = timeline
@@ -143,7 +153,11 @@ class PaneFragment : Fragment() {
         settings.setLegendSeen(night)
     }
 
+    /** Whether the timeline touch under way is the one that opened the legend. */
+    private var legendOpenedByTouch = false
+
     private fun hideLegend() {
+        legendOpenedByTouch = false
         root.findViewById<TimelineLegendView>(R.id.legend).visibility = View.GONE
         root.findViewById<TimelineView>(R.id.timeline).showBoth = false
     }

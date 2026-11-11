@@ -209,6 +209,21 @@ fix-third-party-alarms: SET_ALARM prefers unused slots, DISMISS_ALARM marks them
   close" line goes to whichever end of the panel is free. ScreenshotTest renders the panes with
   `-Pscreenshots=DIR`.
 
+## Round 6: after the first night with 0.5.0 (built in 0.5.1)
+- Neither the WakeBridge alarm nor the owner's own Gadgetbridge alarm rang. The own alarm had
+  been changed on the watch, and was rewritten with Gadgetbridge's stale copy: Gadgetbridge sends
+  every alarm whenever one changes (its Intent API code has a TODO about exactly this).
+- New setting Alarms > "Ring only on the phone" (default off): no alarm goes to the watch, the
+  phone rings at the wake time with no delay; the watch still reports sleep, so sleep-counting
+  modes still need it connected. Greys out the phone backup alarm. Applies from the next session.
+- Setup and info: "Simulate falling asleep" / "Simulate waking up" buttons under the test alarm
+  ones; they pass the Gadgetbridge broadcast through the same receiver and log that it was
+  simulated.
+- Tapping Night starts / Night ends while the legend is closed only opens the legend; the time
+  picker opens on a tap when the legend is already showing. Dragging works straight away either
+  way.
+- CI uploads the APK unzipped (upload-artifact v7, `archive: false`) as WakeBridge-VERSION-debug.apk.
+
 ## Status and how to continue (end of 9 November 2026)
 - The mode control stays a toggle (Manual / Automatic); the switch mockup (ModeSwitch) was not
   chosen.
@@ -228,11 +243,8 @@ fix-third-party-alarms: SET_ALARM prefers unused slots, DISMISS_ALARM marks them
   for package Android SDK Platform-Tools not accepted": it offered a download, nothing was
   accepted or fetched.
 - GitHub Actions (.github/workflows/build.yml) does the same on ubuntu-24.04 after deleting the
-  runner's preinstalled Google SDK, and uploads the APK. **It fails**: it checks out
-  LuccoJ/android-development, which is private, and the workflow's token can't read it.
-  Pending choice: make that repository public, copy its recipe (three files) into this one, or
-  give the workflow a read-only token as a secret. Actions' Node 20 deprecation warnings are
-  harmless for now.
+  runner's preinstalled Google SDK, and uploads the APK. It works since LuccoJ/android-development
+  was made public (11 November). Actions' Node 20 deprecation warnings are harmless for now.
 - Signing: the debug key that signed every APK so far is kept by the owner; stored base64 as the
   repository secret DEBUG_KEYSTORE, CI builds install over local ones. Never commit it; publishing
   would need a real release key.
@@ -250,3 +262,11 @@ fix-third-party-alarms: SET_ALARM prefers unused slots, DISMISS_ALARM marks them
   upstream) fixes both: SET_ALARM clears "unused" when enabling and prefers unused slots;
   DISMISS_ALARM marks the slot unused again. Not yet built or tested; no upstream request for now.
   Commits there carry an "AI-assisted" note, per Gadgetbridge's policy.
+- Fork, second commit: on pre-Zepp OS Huami watches (HuamiCoordinator but not ZeppOsCoordinator;
+  all use HuamiSupport.onSetAlarms, which writes one message per given alarm to its slot) the
+  Intent API sends only the alarms it changed, so alarms changed on the watch aren't overwritten.
+  Other devices still get the full list, since their protocols may take it as the complete set.
+  Reading alarms back first isn't enough on the Bip: Gadgetbridge already asks the watch at
+  connect and when the watch reports a change, but older Huami firmware answers only which slots
+  are on and in use, not their times. Alarms edited in Gadgetbridge's own alarm list are still
+  all sent, as upstream does.

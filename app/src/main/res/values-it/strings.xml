@@ -77,6 +77,8 @@
 
     <!-- Event log -->
     <string name="log_started">Avviata: %s</string>
+    <string name="log_phone_only_setting">Impostato per suonare solo sul telefono</string>
+    <string name="log_simulated">Simulazione di un evento di Gadgetbridge da Configurazione e informazioni</string>
     <string name="log_phone_only">L\'orologio non è connesso: suonerà solo il telefono</string>
     <string name="log_fell_asleep">Gadgetbridge: inizio del sonno</string>
     <string name="log_woke_up">Gadgetbridge: risveglio</string>
@@ -113,6 +115,8 @@
     <string name="settings_alarms_category">Sveglie</string>
     <string name="settings_fail_safe_title">Sveglia di sicurezza</string>
     <string name="settings_fail_safe_summary">Tieni una sveglia sull\'orologio anche prima che venga rilevato il sonno. Pisolini: dopo la durata del pisolino. Notti: alla fine della notte.</string>
+    <string name="settings_phone_only_title">Suona solo sul telefono</string>
+    <string name="settings_phone_only_summary">Non invia sveglie all\'orologio: suona il telefono. L\'orologio segnala comunque quando ti addormenti e ti svegli. Vale dal prossimo pisolino o dalla prossima notte.</string>
     <string name="settings_backup_title">Sveglia di riserva sul telefono</string>
     <string name="settings_backup_summary">Fai suonare il telefono se l\'orologio non segnala il risveglio qualche minuto dopo la sua sveglia</string>
     <string name="settings_backup_delay_title">Ritardo della riserva (minuti)</string>
@@ -143,7 +147,7 @@
     <string name="setup_watch_chosen">Le sveglie vanno a: %s</string>
     <string name="setup_watch_none">Nessun orologio scelto</string>
     <string name="setup_step4_title">4. Verifica</string>
-    <string name="setup_step4_body">Invia una sveglia di prova per circa 2 minuti da ora: dovrebbe comparire nell\'elenco delle sveglie di Gadgetbridge e suonare sull\'orologio. Se non succede, controlla il punto 2 e l\'indirizzo dell\'orologio. Poi rimuovila, per liberare lo spazio.\n\nLa prossima volta che ti addormenti con l\'orologio al polso, gli orari qui sotto dovrebbero cambiare.</string>
+    <string name="setup_step4_body">Invia una sveglia di prova per circa 2 minuti da ora: dovrebbe comparire nell\'elenco delle sveglie di Gadgetbridge e suonare sull\'orologio. Se non succede, controlla il punto 2 e l\'indirizzo dell\'orologio. Poi rimuovila, per liberare lo spazio.\n\nLa prossima volta che ti addormenti con l\'orologio al polso, gli orari qui sotto dovrebbero cambiare. Per provare WakeBridge senza dormire, simula i due eventi con i pulsanti qui sopra.</string>
     <string name="setup_step5_title">5. Telefono</string>
     <string name="setup_step5_body">Per la sveglia di riserva sul telefono, e per sapere se l\'orologio è connesso, il telefono deve consentire:</string>
     <string name="permission_notifications">Notifiche</string>
@@ -156,6 +160,8 @@
     <string name="permission_optional">Non consentito (facoltativo: rende i timer più puntuali)</string>
     <string name="permission_allow">Consenti</string>
     <string name="setup_test_alarm">Sveglia di prova</string>
+    <string name="setup_simulate_asleep">Simula l\'addormentamento</string>
+    <string name="setup_simulate_awake">Simula il risveglio</string>
     <string name="setup_remove_test_alarm">Rimuovi la sveglia di prova</string>
     <string name="setup_never">mai</string>
     <string name="setup_events_status">Ultimo addormentamento: %1$s\nUltimo risveglio: %2$s</string>

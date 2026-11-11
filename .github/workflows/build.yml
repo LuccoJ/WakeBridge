@@ -68,11 +68,18 @@ jobs:
       - name: Build, test and lint
         run: ./gradlew --no-daemon assembleDebug testDebugUnitTest lintDebug -ProbolectricRepoUrl="$MAVEN_MIRROR"
 
+      # Uploaded unzipped, so it downloads as an .apk; the file's name becomes the artifact's
+      - name: Name the APK after the version
+        run: |
+          version=$(sed -n 's/.*versionName = "\(.*\)".*/\1/p' app/build.gradle.kts)
+          cp app/build/outputs/apk/debug/app-debug.apk "WakeBridge-$version-debug.apk"
+          echo "APK=WakeBridge-$version-debug.apk" >> "$GITHUB_ENV"
+
       - name: Upload APK
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
-          name: WakeBridge-debug-apk
-          path: app/build/outputs/apk/debug/*.apk
+          path: ${{ env.APK }}
+          archive: false
 
       - name: Upload reports
         if: always()

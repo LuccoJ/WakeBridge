@@ -108,6 +108,10 @@ class Settings(context: Context) {
     val failSafe: Boolean
         get() = prefs.getBoolean(KEY_FAIL_SAFE, true)
 
+    /** Rings only on the phone: no alarms go to the watch. The watch still reports sleep. */
+    val phoneOnly: Boolean
+        get() = prefs.getBoolean(KEY_PHONE_ONLY, false)
+
     val phoneBackup: Boolean
         get() = prefs.getBoolean(KEY_PHONE_BACKUP, true)
 
@@ -142,6 +146,7 @@ class Settings(context: Context) {
         const val KEY_NIGHT_WAKE_MODE = "night_wake_mode"
         const val KEY_NIGHT_INCLUDE_NAPS = "night_include_naps"
         const val KEY_FAIL_SAFE = "fail_safe"
+        const val KEY_PHONE_ONLY = "phone_only"
         const val KEY_PHONE_BACKUP = "phone_backup"
         const val KEY_BACKUP_DELAY = "backup_delay"
         const val KEY_EXPIRY_HOURS = "expiry_hours"

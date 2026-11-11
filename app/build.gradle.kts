@@ -10,8 +10,8 @@ android {
         applicationId = "io.github.luccoj.wakebridge"
         minSdk = 26
         targetSdk = 35
-        versionCode = 7
-        versionName = "0.5.0"
+        versionCode = 8
+        versionName = "0.5.1"
     }
 
     // Only the app's own languages, so library texts match the rest of the app

@@ -102,6 +102,29 @@
                 android:text="@string/setup_remove_test_alarm" />
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/simulate_asleep"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:text="@string/setup_simulate_asleep" />
+
+            <Button
+                android:id="@+id/simulate_awake"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/setup_simulate_awake" />
+        </LinearLayout>
+
         <TextView
             android:id="@+id/events_status"
             style="@style/SetupBody" />

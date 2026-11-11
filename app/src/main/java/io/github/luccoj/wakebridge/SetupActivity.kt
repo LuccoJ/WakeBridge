@@ -50,6 +50,9 @@ class SetupActivity : AppCompatActivity() {
             EventLog.add(this, getString(R.string.log_test_alarm_removed))
             refresh()
         }
+        // Act as if Gadgetbridge had sent its broadcast, through the same receiver
+        findViewById<Button>(R.id.simulate_asleep).setOnClickListener { simulate(Gadgetbridge.ACTION_FELL_ASLEEP) }
+        findViewById<Button>(R.id.simulate_awake).setOnClickListener { simulate(Gadgetbridge.ACTION_WOKE_UP) }
         findViewById<Button>(R.id.clear_log).setOnClickListener {
             EventLog.clear(this)
             refresh()
@@ -65,6 +68,12 @@ class SetupActivity : AppCompatActivity() {
     override fun onPause() {
         Session.removeListener(listener)
         super.onPause()
+    }
+
+    private fun simulate(action: String) {
+        EventLog.add(this, getString(R.string.log_simulated))
+        SleepEventReceiver().onReceive(this, Intent(action))
+        refresh()
     }
 
     private fun testAlarm() {
