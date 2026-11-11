@@ -269,4 +269,7 @@ fix-third-party-alarms: SET_ALARM prefers unused slots, DISMISS_ALARM marks them
   Reading alarms back first isn't enough on the Bip: Gadgetbridge already asks the watch at
   connect and when the watch reports a change, but older Huami firmware answers only which slots
   are on and in use, not their times. Alarms edited in Gadgetbridge's own alarm list are still
-  all sent, as upstream does.
+  all sent, as upstream does. Commit b3bd0945d5: compiles, not yet tried on the watch.
+- Compiling the fork with the open SDK needs a stub of javax.annotation.processing.Generated
+  (Dagger's generated code uses it; the stubbed android.jar lacks it) added to the JavaCompile
+  classpath through a Gradle init script.
